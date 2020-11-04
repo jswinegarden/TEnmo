@@ -1,5 +1,7 @@
 package com.techelevator.tenmo.model;
 
+import java.math.BigDecimal;
+
 public class Transfer {
 	
 	private Long transferId;
@@ -7,10 +9,11 @@ public class Transfer {
 	private String transferType; //from transfer_types.transfer_type_desc
 	private Long transferStatusId; //from transfer_statuses.transfer_status_id
 	private String transferStatus; //from transfer_statuses.transfer_status_desc
-	private int accountFromUserId;
-	private String accountFromUsername; //username is not stored in transfers table; would have to get from users table based on id
-	private int accountToUserId;
-	private String accountToUsername; //username is not stored in transfers table; would have to get from users table based on id
+	private Long accountFromUserId;
+	private String accountFrom; //username is not stored in transfers table; would have to get from users table based on id
+	private Long accountToUserId;
+	private String accountTo; //username is not stored in transfers table; would have to get from users table based on id
+	private BigDecimal amount;
 	
 	public Long getTransferId() {
 		return transferId;
@@ -42,29 +45,50 @@ public class Transfer {
 	public void setTransferStatus(String transferStatus) {
 		this.transferStatus = transferStatus;
 	}
-	public int getAccountFromUserId() {
+	public Long getAccountFromUserId() {
 		return accountFromUserId;
 	}
-	public void setAccountFromUserId(int accountFromUserId) {
+	public void setAccountFromUserId(Long accountFromUserId) {
 		this.accountFromUserId = accountFromUserId;
 	}
-	public String getAccountFromUsername() {
-		return accountFromUsername;
+	public String getAccountFrom() {
+		return accountFrom;
 	}
-	public void setAccountFromUsername(String accountFromUsername) {
-		this.accountFromUsername = accountFromUsername;
+	public void setAccountFrom(String accountFrom) {
+		this.accountFrom = accountFrom;
 	}
-	public int getAccountToUserId() {
+	public Long getAccountToUserId() {
 		return accountToUserId;
 	}
-	public void setAccountToUserId(int accountToUserId) {
+	public void setAccountToUserId(Long accountToUserId) {
 		this.accountToUserId = accountToUserId;
 	}
-	public String getAccountToUsername() {
-		return accountToUsername;
+	public String getAccountTo() {
+		return accountTo;
 	}
-	public void setAccountToUsername(String accountToUsername) {
-		this.accountToUsername = accountToUsername;
+	public void setAccountTo(String accountToUsername) {
+		this.accountTo = accountToUsername;
 	}
 	
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+	
+	@Override
+	public String toString() {
+		return "\n--------------------------------------------" +
+				"\n Transfer Details" +
+				"\n--------------------------------------------" +
+				"\n Transfer Id: " + transferId +
+				"\n From: " + accountFrom +
+				"\n To: " + accountTo +
+				"\n Type: " + transferType +
+				"\n Status: " + transferStatus +
+				"\n Amount: $" + amount;
+	}
+
 }
