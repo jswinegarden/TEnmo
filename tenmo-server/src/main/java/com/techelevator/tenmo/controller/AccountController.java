@@ -28,13 +28,15 @@ public class AccountController {
 	
 	@PreAuthorize("hasRole('USER')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public Account viewCurrentBalance(@PathVariable Long accountId, Principal principal) {
-		return accountDAO.viewCurrentBalance(accountId, principal.getName());
+	public Account viewCurrentBalance(@PathVariable Long accountId) {
+		return accountDAO.viewCurrentBalance(accountId);
 }
 	
 	@PreAuthorize("hasRole('USER')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-	public boolean updateSenderAccountBalance(@Valid @RequestBody Long accountId)
+	public boolean updateSenderAccountBalance(@Valid @RequestBody Long accountId) {
+		return true;
+	}
 
 	
 }

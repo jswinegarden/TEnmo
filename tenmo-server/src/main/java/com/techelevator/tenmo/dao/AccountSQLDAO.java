@@ -35,7 +35,7 @@ public class AccountSQLDAO implements AccountDAO {
 	}
 	
 	@Override
-	public boolean updateSenderAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance) {
+	public boolean updateSenderAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance) { //not working currently
 		String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
 		return jdbcTemplate.update(sql, amount) == 1;
 	}
@@ -43,7 +43,7 @@ public class AccountSQLDAO implements AccountDAO {
 	
 	
 	@Override
-	public boolean updateReceiverAccountBalance(Long accountId, BigDecimal amount) {
+	public boolean updateReceiverAccountBalance(Long accountId, BigDecimal amount) { //not working currently
 		// TODO Auto-generated method stub
 		return false;
 	}
