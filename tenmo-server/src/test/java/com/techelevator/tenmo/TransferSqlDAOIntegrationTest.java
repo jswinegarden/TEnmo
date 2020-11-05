@@ -56,7 +56,7 @@ public class TransferSqlDAOIntegrationTest {
 	}
 	
 	@Test
-	public void findOwnPastTransfers_returnAll() {
+	public void viewOwnPastTransfers_returnAll() {
 		//Arrange
 		String sqlInsertType = "INSERT INTO transfer_types (transfer_type_id, transfer_type_desc) " +
 						"VALUES (1, 'Test')";
@@ -73,7 +73,7 @@ public class TransferSqlDAOIntegrationTest {
 		jdbcTemplate.update(sql);
 		
 		//Act
-		List<Transfer> results = dao.findOwnPastTransfers((long)1);
+		List<Transfer> results = dao.viewOwnPastTransfers((long)1);
 		
 		//Assert
 		Assert.assertNotEquals(null, results);
@@ -81,7 +81,7 @@ public class TransferSqlDAOIntegrationTest {
 	}
 	
 	@Test
-	public void findTransferId_ValidId_InvalidId_ReturnOnlyValidId() {
+	public void viewTransferId_ValidId_InvalidId_ReturnOnlyValidId() {
 		//Arrange
 		
 		String sqlInsertType = "INSERT INTO transfer_types (transfer_type_id, transfer_type_desc) " +
@@ -99,10 +99,12 @@ public class TransferSqlDAOIntegrationTest {
 		jdbcTemplate.update(sql);
 		
 		//Act
-		Transfer validId = dao.findTransferById((long)1);
+		Transfer validId = dao.viewTransferById((long)1);
+		Transfer invalidId = dao.viewTransferById((long)2);
 		
 		//Assert
 		Assert.assertNotNull(validId);
+		Assert.assertNull(invalidId);
 	}
 	
 	//Need to complete

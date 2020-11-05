@@ -7,9 +7,9 @@ import com.techelevator.tenmo.model.Transfer;
 
 public interface TransferDAO {
 	
-	List<Transfer> findOwnPastTransfers(Long currentUserId);
+	List<Transfer> viewOwnPastTransfers(Long currentUserId);
 	
-	Transfer findTransferById(Long id);
+	Transfer viewTransferById(Long id);
 	
 	void sendTransfer(Long fromUserId, Long toUserId, BigDecimal amount);
 	

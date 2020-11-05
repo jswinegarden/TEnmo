@@ -23,7 +23,7 @@ public class TransferSqlDAO implements TransferDAO {
 	}
 
 	@Override
-	public List<Transfer> findOwnPastTransfers(Long currentUserId) {
+	public List<Transfer> viewOwnPastTransfers(Long currentUserId) {
 		List<Transfer> pastTransfers = new ArrayList<>();
 		
 		String sql = "SELECT t.transfer_id, t.transfer_type_id, tt.transfer_type_desc, t.transfer_status_id, ts.transfer_status_desc, " +
@@ -31,8 +31,8 @@ public class TransferSqlDAO implements TransferDAO {
 					"FROM transfers t " +
 					"INNER JOIN transfer_types tt ON tt.transfer_type_id = t.transfer_type_id " +
 					"INNER JOIN transfer_statuses ts ON ts.transfer_status_id = t.transfer_status_id " + 
-					"INNER JOIN accounts a ON a.account_id = t.account_from OR a.account_id = t.account_to " + 
-					"AND a.account_id = ? ";
+					"INNER JOIN accounts a ON a.user_id = t.account_from OR a.user_id = t.account_to " + 
+					"AND a.user_id = ? ";
 		
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, currentUserId);
 		while(results.next()) {
@@ -44,8 +44,15 @@ public class TransferSqlDAO implements TransferDAO {
 	}
 
 	@Override
-	public Transfer findTransferById(Long id) {
-		Transfer transfer = new Transfer(); 
+	public Transfer viewTransferById(Long id) {
+		for (Transfer transfer : this.getAllTransfers()) {
+			if (transfer.getTransferId() == id) {
+				return transfer;
+			}
+		}
+		return null;
+		
+		/*
 		String sql = "SELECT t.transfer_id, t.transfer_type_id, tt.transfer_type_desc, t.transfer_status_id, ts.transfer_status_desc, " +
 				"t.account_from, t.account_to, t.amount " +
 				"FROM transfers t " +
@@ -56,10 +63,12 @@ public class TransferSqlDAO implements TransferDAO {
 		 SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
 		 
 		 if (results.next()) {
-			 transfer = mapRowToTransfer(results);
+			Transfer transfer = mapRowToTransfer(results);
+			return transfer;
 		 }
 		 
-		 return transfer;
+//		 return transfer; 
+		 */
 	}
 
 	@Override
