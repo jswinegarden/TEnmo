@@ -7,10 +7,10 @@ import com.techelevator.tenmo.model.Transfer;
 
 public interface TransferDAO {
 	
-	List<Transfer> viewOwnPastTransfers();
+	List<Transfer> findOwnPastTransfers(); //this will use viewPastTransfers
 	
 	Transfer findTransferById(Long id);
 	
-	boolean createTransferTypeSend(BigDecimal amount, Long userId); //is this method name okay?
+	boolean createTransferTypeSend(Long fromUserId, Long toUserId, BigDecimal amount); //is this method name okay?
 	
 }

@@ -9,10 +9,18 @@ public class Transfer {
 	private String transferType; //from transfer_types.transfer_type_desc
 	private Long transferStatusId; //from transfer_statuses.transfer_status_id
 	private String transferStatus; //from transfer_statuses.transfer_status_desc
-	private Long accountFromUserId;
-	private String accountFrom; //username is not stored in transfers table; would have to get from users table based on id
-	private Long accountToUserId;
-	private String accountTo; //username is not stored in transfers table; would have to get from users table based on id
+	private Long accountFrom; // this is account_id
+	
+	/* Omitting for now. implemented in SendMoneyDTO
+	 * private String accountFromUsername; //username is not stored in transfers table; would have to get from users table based on id
+	 */
+	
+	private Long accountTo;
+	
+	/* Omitting for now. implemented in SendMoneyDTO
+	 * private String accountToUsername; //username is not stored in transfers table; would have to get from users table based on id
+	 */
+	
 	private BigDecimal amount;
 	
 	public Long getTransferId() {
@@ -45,29 +53,18 @@ public class Transfer {
 	public void setTransferStatus(String transferStatus) {
 		this.transferStatus = transferStatus;
 	}
-	public Long getAccountFromUserId() {
-		return accountFromUserId;
-	}
-	public void setAccountFromUserId(Long accountFromUserId) {
-		this.accountFromUserId = accountFromUserId;
-	}
-	public String getAccountFrom() {
+	public Long getAccountFrom() {
 		return accountFrom;
 	}
-	public void setAccountFrom(String accountFrom) {
+	public void setAccountFrom(Long accountFrom) {
 		this.accountFrom = accountFrom;
 	}
-	public Long getAccountToUserId() {
-		return accountToUserId;
-	}
-	public void setAccountToUserId(Long accountToUserId) {
-		this.accountToUserId = accountToUserId;
-	}
-	public String getAccountTo() {
+
+	public Long getAccountTo() {
 		return accountTo;
 	}
-	public void setAccountTo(String accountToUsername) {
-		this.accountTo = accountToUsername;
+	public void setAccountTo(Long accountTo) {
+		this.accountTo = accountTo;
 	}
 	
 	public BigDecimal getAmount() {
@@ -77,6 +74,21 @@ public class Transfer {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
+	
+	/*
+	public String viewPastTransfers() {
+		return "\n--------------------------------------------" +
+				"\n Transfers"
+				+ " ID			From/To					Amount" +
+				"\n--------------------------------------------" +
+				"\n "+ transferId + "		From"
+				"\n From: " + accountFrom +
+				"\n To: " + accountTo +
+				"\n Type: " + transferType +
+				"\n Status: " + transferStatus +
+				"\n Amount: $" + amount;
+	}
+	*/
 	
 	@Override
 	public String toString() {
