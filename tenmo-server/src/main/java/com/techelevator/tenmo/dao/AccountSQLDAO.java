@@ -35,17 +35,28 @@ public class AccountSQLDAO implements AccountDAO {
 	}
 	
 	@Override
-	public boolean updateSenderAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance) { //not working currently
+	public boolean updateSenderAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance) { //not working currently 
+		BigDecimal account = accountBalance;
+		BigDecimal sub = amount;
+		//if(amount.compareTo(new BigDecimal(Double.toString(accountBalance))) > 0) {
+		if((account.compareTo(new BigDecimal(sub)) = - 1) == true) {
+			return false;
+			
+		}
 		String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
-		return jdbcTemplate.update(sql, amount) == 1;
+		BigDecimal diff = account.add(sub);
+		return jdbcTemplate.update(sql, diff) == 1;
 	}
 	
 	
 	
 	@Override
-	public boolean updateReceiverAccountBalance(Long accountId, BigDecimal amount) { //not working currently
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateReceiverAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance) { //not working currently
+		String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
+		BigDecimal account = new BigDecimal(accountBalance);
+		BigDecimal add = new BigDecimal(amount);
+		BigDecimal sum = account.add(add);
+		return jdbcTemplate.update(sql, sum) == 1;
 	}
 	
 

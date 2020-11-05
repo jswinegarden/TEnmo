@@ -11,7 +11,7 @@ public interface AccountDAO {
 	
 	boolean updateSenderAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance);
 	
-	boolean updateReceiverAccountBalance(Long accountId, BigDecimal amount);
+	boolean updateReceiverAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance);
 	
 	
 	
