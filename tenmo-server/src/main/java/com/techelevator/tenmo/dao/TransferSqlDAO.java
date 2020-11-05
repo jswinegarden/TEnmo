@@ -34,7 +34,7 @@ public class TransferSqlDAO implements TransferDAO {
 					"INNER JOIN accounts a ON a.account_id = t.account_from OR a.account_id = t.account_to " + 
 					"AND a.account_id = ? ";
 		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, currentUserId);
 		while(results.next()) {
 			Transfer transfer = mapRowToTransfer(results);
 			pastTransfers.add(transfer);
@@ -63,9 +63,9 @@ public class TransferSqlDAO implements TransferDAO {
 	}
 
 	@Override
-	public boolean createTransferTypeSend(Long fromUserId, Long toUserId, BigDecimal amount) {
+	public void sendTransfer(Long fromUserId, Long toUserId, BigDecimal amount) {
 		// TODO Auto-generated method stub
-		return false;
+	
 	}
 	
 	@Override

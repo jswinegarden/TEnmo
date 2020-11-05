@@ -56,28 +56,26 @@ public class TransferSqlDAOIntegrationTest {
 	}
 	
 	@Test
-	public void getAllTransfers_returnAll() {
-		
+	public void findOwnPastTransfers_returnAll() {
 		//Arrange
 		String sqlInsertType = "INSERT INTO transfer_types (transfer_type_id, transfer_type_desc) " +
-				"VALUES (1, 'Test')";
+						"VALUES (1, 'Test')";
 
 		String sqlInsertStatus = "INSERT INTO transfer_statuses (transfer_status_id, transfer_status_desc) " +
-				"VALUES (1, 'Test')";
-		
+						"VALUES (1, 'Test')";
+				
 		jdbcTemplate.update(sqlInsertType);
 		jdbcTemplate.update(sqlInsertStatus);
-		
+				
 		String sql = "INSERT INTO transfers (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-					"VALUES (1, 1, 1, 1, 2, 10.00)";
-		
+						"VALUES (1, 1, 1, 1, 2, 10.00)";
+				
 		jdbcTemplate.update(sql);
 		
 		//Act
-		List<Transfer> results = dao.getAllTransfers();
+		List<Transfer> results = dao.findOwnPastTransfers((long)1);
 		
 		//Assert
-		
 		Assert.assertNotEquals(null, results);
 		Assert.assertEquals(1, results.size());
 	}
@@ -106,6 +104,37 @@ public class TransferSqlDAOIntegrationTest {
 		//Assert
 		Assert.assertNotNull(validId);
 	}
+	
+	//Need to complete
+	public void sendTransfer_expectedResult_TBD() {
+		// TODO Auto-generated method stub
+	}
+	
+	@Test
+	public void getAllTransfers_returnAll() {
+		
+		//Arrange
+		String sqlInsertType = "INSERT INTO transfer_types (transfer_type_id, transfer_type_desc) " +
+				"VALUES (1, 'Test')";
 
+		String sqlInsertStatus = "INSERT INTO transfer_statuses (transfer_status_id, transfer_status_desc) " +
+				"VALUES (1, 'Test')";
+		
+		jdbcTemplate.update(sqlInsertType);
+		jdbcTemplate.update(sqlInsertStatus);
+		
+		String sql = "INSERT INTO transfers (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+					"VALUES (1, 1, 1, 1, 2, 10.00)";
+		
+		jdbcTemplate.update(sql);
+		
+		//Act
+		List<Transfer> results = dao.getAllTransfers();
+		
+		//Assert
+		
+		Assert.assertNotEquals(null, results);
+		Assert.assertEquals(1, results.size());
+	}
 
 }
