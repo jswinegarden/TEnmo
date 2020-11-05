@@ -15,7 +15,7 @@ import com.techelevator.tenmo.dao.AccountDAO;
 import com.techelevator.tenmo.dao.AccountSQLDAO;
 import com.techelevator.tenmo.model.Account;
 
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
@@ -26,17 +26,24 @@ public class AccountController {
 		this.accountDAO = new AccountSQLDAO(null);
 	}
 	
-	@PreAuthorize("hasRole('USER')")
+	public AccountController (AccountDAO accountDAO) {
+		this.accountDAO = accountDAO;
+	}
+	
+	//@PreAuthorize("hasRole('USER')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public Account viewCurrentBalance(@PathVariable Long accountId) {
+	public Account viewCurrentBalance(@PathVariable("id") Long accountId) {
 		return accountDAO.viewCurrentBalance(accountId);
 }
-	
-	@PreAuthorize("hasRole('USER')")
-	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-	public boolean updateSenderAccountBalance(@Valid @RequestBody Long accountId) {
+	@RequestMapping(path = "", method = RequestMethod.PUT)
+	public boolean updateReceiverAccountBalance(@Valid @RequestBody Long accountId) {
 		return true;
 	}
+//	@PreAuthorize("hasRole('USER')")
+//	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+//	public boolean updateSenderAccountBalance(@Valid @RequestBody Long accountId) {
+//		return true;
+//	}
 
 	
 }
