@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -16,11 +18,10 @@ import com.techelevator.tenmo.model.User;
 @Component
 public class AccountSQLDAO implements AccountDAO {
 	
-	
 	private JdbcTemplate jdbcTemplate;
 	
-	public AccountSQLDAO(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public AccountSQLDAO(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
 	@Override
