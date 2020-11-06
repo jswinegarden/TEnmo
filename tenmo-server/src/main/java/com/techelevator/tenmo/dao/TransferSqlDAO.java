@@ -18,10 +18,6 @@ import com.techelevator.tenmo.model.User;
 @Component
 public class TransferSqlDAO implements TransferDAO {
 	
-//	private int currenUserId;
-//	private UserDAO userDAO;
-//	private LoginDTO loginDto;
-	
 	private JdbcTemplate jdbcTemplate;
 
 	public TransferSqlDAO(DataSource dataSource) {
