@@ -79,11 +79,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewCurrentBalance() {
-		System.out.println("Enter in your account ID: ");
-		String userInput = console.getUserInput("Enter in your account ID");
-		Long id = Long.parseLong(userInput);
+//		System.out.println("Enter in your account ID: ");
+//		String userInput = console.getUserInput("Enter in your account ID");
+//		Long id = Long.parseLong(userInput);
 		try {
-			accountService.viewCurrentBalance(id);
+			accountService.viewCurrentBalance(currentUser.getUser().getId().longValue());
 		} catch (AccountServiceException e) {
 			e.printStackTrace();
 			System.out.println("Invalid account ID, please try again with a valid ID.");
