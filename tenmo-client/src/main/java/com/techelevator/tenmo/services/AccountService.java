@@ -20,14 +20,14 @@ public class AccountService {
 		BASE_URL = url;
 	}
 	
-	public BigDecimal viewCurrentBalance(Long accountId) throws AccountServiceException {
+	public Account viewCurrentBalance(Long accountId) throws AccountServiceException {
 		Account account = null;
 		try {
 			account = restTemplate.exchange(BASE_URL + "accounts/" + accountId, HttpMethod.GET, makeAuthEntity(), Account.class).getBody();
 		} catch (RestClientResponseException ex) {
 			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
-		return account.getAccountBalance();
+		return account;
 	}
 	
 	
