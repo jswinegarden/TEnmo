@@ -41,7 +41,6 @@ public class Account {
 		this.accountBalance = accountBalance;
 	}
 
-
 	@Override
 	public String toString() {
 		return "\n--------------------------" +
