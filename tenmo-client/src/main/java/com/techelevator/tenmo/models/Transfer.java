@@ -77,9 +77,9 @@ public class Transfer {
 			   "\n Transfer ID: " + transferId +
 			   "\n From: " + accountFromId +
 			   "\n To: " + accountToId +
+			   "\n Amount: " + amount +
 			   "\n Type: " + transferTypeId +
-			   "\n Status: " + transferStatusId +
-			   "\n Amount: " + amount;
+			   "\n Status: " + transferStatusId;
 	}
 }
 	
