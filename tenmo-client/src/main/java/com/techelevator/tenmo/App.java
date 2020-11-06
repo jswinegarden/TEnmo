@@ -83,7 +83,9 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 //		String userInput = console.getUserInput("Enter in your account ID");
 //		Long id = Long.parseLong(userInput);
 		try {
-			accountService.viewCurrentBalance(currentUser.getUser().getId().longValue());
+			System.out.println("Your current account balance is: $" + 
+					accountService.viewCurrentBalance(currentUser.getUser().getId().longValue()).getAccountBalance());
+			
 		} catch (AccountServiceException e) {
 			e.printStackTrace();
 			System.out.println("Invalid account ID, please try again with a valid ID.");
