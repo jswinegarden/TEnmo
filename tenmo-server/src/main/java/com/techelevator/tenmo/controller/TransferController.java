@@ -19,9 +19,9 @@ public class TransferController {
 		this.transferDAO = transferDAO;
 	}
 	//not working
-	@RequestMapping(value = "/accounts/{id}/transfers", method = RequestMethod.GET)
-	public List<Transfer> viewOwnPastTransfers(@PathVariable Long currentUserId){
-		return transferDAO.viewOwnPastTransfers(currentUserId);
+	@RequestMapping(value = "/transfers", method = RequestMethod.GET)
+	public List<Transfer> viewOwnPastTransfers(){
+		return transferDAO.viewOwnPastTransfers();
 	}
 	
 	@RequestMapping(value = "transfers/{id}", method = RequestMethod.GET)
