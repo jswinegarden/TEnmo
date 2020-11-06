@@ -79,9 +79,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewCurrentBalance() {
-		//System.out.println("Enter in your account ID: ");
-		String userInput = console.getUserInput("Enter in your account ID");
-		Long id = Long.parseLong(userInput);
 		try {
 			System.out.println("Your current account balance is: $" + 
 					accountService.viewCurrentBalance(currentUser.getUser().getId().longValue()).getAccountBalance());
