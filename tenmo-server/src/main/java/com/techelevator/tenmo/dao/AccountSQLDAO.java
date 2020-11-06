@@ -27,7 +27,7 @@ public class AccountSQLDAO implements AccountDAO {
 	@Override
 	public Account viewCurrentBalance(Long accountId) {
 		Account accounts = null;
-		String sql = "SELECT * FROM accounts WHERE account_id = ?";
+		String sql = "SELECT balance FROM accounts WHERE account_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
 		while(results.next()) {
 			accounts = mapRowToAccount(results);
