@@ -14,7 +14,7 @@ public class AccountDAOTests {
 	@BeforeClass
 	public static void setupDataSource() {
 		dataSource = new SingleConnectionDataSource();
-		dataSource.setUrl("");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/tenmo");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("postgres1");
 		dataSource.setAutoCommit(false);

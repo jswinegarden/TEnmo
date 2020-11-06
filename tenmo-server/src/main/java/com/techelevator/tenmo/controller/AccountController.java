@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.controller;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 
 import javax.validation.Valid;
@@ -23,9 +24,9 @@ public class AccountController {
 	
 	private AccountDAO accountDAO;
 	
-	public AccountController () {
-		this.accountDAO = new AccountSQLDAO(null);
-	}
+//	public AccountController () {
+//		this.accountDAO = new AccountSQLDAO(null);
+//	}
 	
 	public AccountController (AccountDAO accountDAO) {
 		this.accountDAO = accountDAO;
@@ -37,11 +38,12 @@ public class AccountController {
 		return accountDAO.viewCurrentBalance(accountId);
 }
 	
-//	@PreAuthorize("hasRole('USER')")
-//	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-//	public boolean updateSenderAccountBalance(@Valid @RequestBody Long accountId) {
-//		return true;
-//	}
+	//@PreAuthorize("hasRole('USER')")
+	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+	public boolean updateSenderAccountBalance(@Valid @RequestBody @PathVariable("id") Long accountId, BigDecimal amount, BigDecimal accountBalance) {
+		accountDAO.updateSenderAccountBalance(accountId, amount, accountBalance);
+		return true;
+	}
 
 	
 }
