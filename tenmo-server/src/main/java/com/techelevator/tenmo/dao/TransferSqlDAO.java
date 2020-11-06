@@ -34,10 +34,10 @@ public class TransferSqlDAO implements TransferDAO {
 					"FROM transfers t " +
 					"INNER JOIN transfer_types tt ON tt.transfer_type_id = t.transfer_type_id " +
 					"INNER JOIN transfer_statuses ts ON ts.transfer_status_id = t.transfer_status_id " +
-					"INNER JOIN accounts a ON a.account_id = t.account_from OR a.account_id = t.account_to " +
-					"AND a.account_id = ?"; 
+					"WHERE t.account_from IN (SELECT account_id FROM accounts WHERE account_id = ?) " +
+					"OR t.account_to IN (SELECT account_id FROM accounts WHERE account_id = ?)";
 		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId, accountId);
 		while(results.next()) {
 			Transfer transfer = mapRowToTransfer(results);
 			pastTransfers.add(transfer);
@@ -47,9 +47,9 @@ public class TransferSqlDAO implements TransferDAO {
 	}
 
 	@Override
-	public Transfer viewTransferById(Long id) {
+	public Transfer viewTransferById(Long accountId) {
 		for (Transfer transfer : this.getAllTransfers()) {
-			if (transfer.getTransferId() == id) {
+			if (transfer.getTransferId() == accountId) {
 				return transfer;
 			}
 		}
