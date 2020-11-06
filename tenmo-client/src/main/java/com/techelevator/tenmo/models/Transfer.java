@@ -13,7 +13,6 @@ public class Transfer {
 	
 	public Transfer(Long transferId, Long transferTypeId, Long transferStatusId, Long accountFromId,
 			Long accountToId, BigDecimal amount) {
-		super();
 		this.transferId = transferId;
 		this.transferTypeId = transferTypeId;
 		this.transferStatusId = transferStatusId;

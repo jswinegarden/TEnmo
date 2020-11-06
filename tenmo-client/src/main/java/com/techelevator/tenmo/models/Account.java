@@ -8,12 +8,10 @@ public class Account {
 	private BigDecimal accountBalance;
 	
 	public Account(Long accountId, Long userId, BigDecimal accountBalance) {
-		super();
 		this.accountId = accountId;
 		this.userId = userId;
 		this.accountBalance = accountBalance;
 	}
-
 
 	public Long getAccountId() {
 		return accountId;
@@ -38,7 +36,6 @@ public class Account {
 	public void setAccountBalance(BigDecimal accountBalance) {
 		this.accountBalance = accountBalance;
 	}
-
 
 	@Override
 	public String toString() {
