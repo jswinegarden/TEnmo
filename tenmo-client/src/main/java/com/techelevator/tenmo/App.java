@@ -1,9 +1,17 @@
 package com.techelevator.tenmo;
 
+import java.math.BigDecimal;
+import java.util.Scanner;
+
 import com.techelevator.tenmo.models.AuthenticatedUser;
+import com.techelevator.tenmo.models.Transfer;
 import com.techelevator.tenmo.models.UserCredentials;
+import com.techelevator.tenmo.services.AccountService;
+import com.techelevator.tenmo.services.AccountServiceException;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.AuthenticationServiceException;
+import com.techelevator.tenmo.services.TransferService;
+import com.techelevator.tenmo.services.TransferServiceException;
 import com.techelevator.view.ConsoleService;
 
 public class App {
@@ -25,6 +33,9 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     private AuthenticatedUser currentUser;
     private ConsoleService console;
     private AuthenticationService authenticationService;
+    AccountService accountService = new AccountService(API_BASE_URL);
+    TransferService transferService = new TransferService(API_BASE_URL);
+    private Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
     	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL));
@@ -68,27 +79,46 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Enter in your account ID: ");
+		String userInput = console.getUserInput("Enter in your account ID");
+		Long id = Long.parseLong(userInput);
+		try {
+			accountService.viewCurrentBalance(id);
+		} catch (AccountServiceException e) {
+			e.printStackTrace();
+			System.out.println("Invalid account ID, please try again with a valid ID.");
+		}
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
+		try {
+			transferService.viewTransferHistory();
+		} catch (TransferServiceException e) {
+			e.printStackTrace();
+			System.out.println("It looks like you don't have any transactions. Please make a transaction to view your history.");
+		}
 		
 	}
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
+		// Optional
 		
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
-		
+		String newTransferString = console.promptForTransferData(null);
+		try {
+			Transfer transfer = transferService.sendBucks(newTransferString);
+		} catch (TransferServiceException e) {
+			e.printStackTrace();
+			System.out.println("It looks like the transfer didn't go through. Make sure you have enough money in your account to make this transfer, and all your transfer data is entered properly");
+		}
 	}
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
+		//Optional
 		
 	}
 	
@@ -151,4 +181,5 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		String password = console.getUserInput("Password");
 		return new UserCredentials(username, password);
 	}
+
 }
