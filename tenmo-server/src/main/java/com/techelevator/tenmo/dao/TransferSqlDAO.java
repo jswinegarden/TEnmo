@@ -61,8 +61,16 @@ public class TransferSqlDAO implements TransferDAO {
 	}
 
 	@Override
-	public void sendTransfer(Long fromUserId, Long toUserId, BigDecimal amount) {
-		// TODO Auto-generated method stub
+	public void sendTransfer(Long fromAccountId, Long toAccountId, BigDecimal amount) {
+		// INSERT into transfers where given id is toAccountId, current user logged in is fromAccountId, and status is approved
+		// Call updateBalance methods (to increase toUser and decrease fromUser)
+		
+		//Transfer newSendTransfer = new Transfer(); //Are we returning a transfer?
+		
+		String sql = "INSERT INTO transfers (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+					"VALUES (DEFAULT, (SELECT transfer_status_id FROM transfer_statuses WHERE transfer_status_desc = 'Approved'), " +
+							"(SELECT transfer_type_id FROM transfer_types WHERE transfer_type_desc = 'Send'), " +
+							"? , ? , ?) ";
 	
 	}
 	
