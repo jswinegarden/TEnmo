@@ -5,14 +5,12 @@ import java.math.BigDecimal;
 public class Transfer {
 	
 	private Long transferId;
-	private Long transferTypeId; //from transfer_types.transfer_type_id
-	private String transferType; //from transfer_types.transfer_type_desc
-	private Long transferStatusId; //from transfer_statuses.transfer_status_id
-	private String transferStatus; //from transfer_statuses.transfer_status_desc
-	private Long accountFromUserId;
-	private String accountFrom; //username is not stored in transfers table; would have to get from users table based on id
-	private Long accountToUserId;
-	private String accountTo; //username is not stored in transfers table; would have to get from users table based on id
+	private Long transferTypeId;
+	private String transferType;
+	private Long transferStatusId;
+	private String transferStatus;
+	private Long accountFrom;
+	private Long accountTo;
 	private BigDecimal amount;
 	
 	public Long getTransferId() {
@@ -45,29 +43,18 @@ public class Transfer {
 	public void setTransferStatus(String transferStatus) {
 		this.transferStatus = transferStatus;
 	}
-	public Long getAccountFromUserId() {
-		return accountFromUserId;
-	}
-	public void setAccountFromUserId(Long accountFromUserId) {
-		this.accountFromUserId = accountFromUserId;
-	}
-	public String getAccountFrom() {
+	public Long getAccountFrom() {
 		return accountFrom;
 	}
-	public void setAccountFrom(String accountFrom) {
+	public void setAccountFrom(Long accountFrom) {
 		this.accountFrom = accountFrom;
 	}
-	public Long getAccountToUserId() {
-		return accountToUserId;
-	}
-	public void setAccountToUserId(Long accountToUserId) {
-		this.accountToUserId = accountToUserId;
-	}
-	public String getAccountTo() {
+
+	public Long getAccountTo() {
 		return accountTo;
 	}
-	public void setAccountTo(String accountToUsername) {
-		this.accountTo = accountToUsername;
+	public void setAccountTo(Long accountTo) {
+		this.accountTo = accountTo;
 	}
 	
 	public BigDecimal getAmount() {
