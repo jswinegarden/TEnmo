@@ -38,12 +38,6 @@ public class AccountController {
 		return accountDAO.viewCurrentBalance(accountId);
 }
 	
-	//@PreAuthorize("hasRole('USER')")
-	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-	public boolean updateSenderAccountBalance(@Valid @RequestBody @PathVariable("id") Long accountId, BigDecimal amount, BigDecimal accountBalance) {
-		accountDAO.updateSenderAccountBalance(accountId, amount, accountBalance);
-		return true;
-	}
 
 	
 }
