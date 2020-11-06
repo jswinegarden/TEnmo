@@ -6,10 +6,13 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import com.techelevator.tenmo.models.Transfer;
+
 public class ConsoleService {
 
 	private PrintWriter out;
 	private Scanner in;
+	private Scanner scanner = new Scanner(System.in);
 
 	public ConsoleService(InputStream input, OutputStream output) {
 		this.out = new PrintWriter(output, true);
@@ -72,5 +75,23 @@ public class ConsoleService {
 			}
 		} while(result == null);
 		return result;
+	}
+	
+	public String promptForTransferData(Transfer transfer) {
+		String transferString;
+		System.out.println("----------------------------------------");
+		System.out.println("Enter transfer data as a comma separated list containing:");
+		System.out.println("From Account, To Account, Amount to Transfer");
+		if (transfer != null) {
+			System.out.println(transfer.toString());
+		} else {
+			System.out.println("Example: John, Amy, 20");
+		}
+		System.out.println("----------------------------------------");
+		transferString = scanner.nextLine();
+		if (transfer != null) {
+			transferString = transfer.getTransferId() + "," + transferString + "," + transfer.getTransferTypeId() + "," + transfer.getTransferStatusId();
+		}
+		return transferString;
 	}
 }
