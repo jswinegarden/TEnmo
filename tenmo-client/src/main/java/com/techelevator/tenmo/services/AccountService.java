@@ -1,5 +1,7 @@
 package com.techelevator.tenmo.services;
 
+import java.math.BigDecimal;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,14 +20,14 @@ public class AccountService {
 		BASE_URL = url;
 	}
 	
-	public Account viewCurrentBalance(Long accountId) throws AccountServiceException {
+	public BigDecimal viewCurrentBalance(Long accountId) throws AccountServiceException {
 		Account account = null;
 		try {
 			account = restTemplate.exchange(BASE_URL + "accounts/" + accountId, HttpMethod.GET, makeAuthEntity(), Account.class).getBody();
 		} catch (RestClientResponseException ex) {
 			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
-		return account;
+		return account.getAccountBalance();
 	}
 	
 	

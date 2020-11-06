@@ -41,5 +41,4 @@ public class TransferController {
     	return transferDAO.sendTransfer(toUserId, toUserId, amount);
     }
 
-	
 }
