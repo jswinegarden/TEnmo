@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,10 +22,11 @@ public class TransferService {
 		BASE_URL = url;
 	}
 	
-	public Transfer[] viewTransferHistory() throws TransferServiceException {
+	public Transfer[] viewTransferHistory(Long accountId) throws TransferServiceException {
 		Transfer[] transfers = null;
 		try {
-			transfers = restTemplate.exchange(BASE_URL + "transfers", HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
+			transfers = restTemplate.getForObject(BASE_URL + "accounts/"+ accountId +"/transfers", Transfer[].class);
+//			transfers = restTemplate.exchange(BASE_URL + "accounts/"+ accountId +"/transfers", HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
@@ -42,15 +44,16 @@ public class TransferService {
 	}
 	
 	private Transfer makeTransfer(String CSV) {
-		String[] parsed = CSV.split(",");
-		BigDecimal transferAmount = new BigDecimal(parsed[5]);
 		
-		if(parsed.length < 5 || parsed.length > 6) {
+		String[] parsed = CSV.split(",");
+		BigDecimal transferAmount = new BigDecimal(parsed[7]);
+		
+		if(parsed.length < 7 || parsed.length > 8) {
 			return null;
 		}
 		
-		if (parsed.length == 5) {
-			String[] withId = new String[7];
+		if (parsed.length == 7) {
+			String[] withId = new String[9];
 			Transfer[] transfers = new Transfer[0];
 			try {
 				transfers = viewTransferHistory();
@@ -66,7 +69,7 @@ public class TransferService {
 			parsed = withId;
 			
 		}
-		return new Transfer(Long.parseLong(parsed[0].trim()), Long.parseLong(parsed[1].trim()), Long.parseLong(parsed[2].trim()), Long.parseLong(parsed[3].trim()), Long.parseLong(parsed[4].trim()), transferAmount);
+		return new Transfer(Long.parseLong(parsed[0].trim()), Long.parseLong(parsed[1].trim()), parsed[2].trim(), Long.parseLong(parsed[3].trim()), parsed[4].trim(), Long.parseLong(parsed[5].trim()), Long.parseLong(parsed[6].trim()), transferAmount);
 	}
 	
 	private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {

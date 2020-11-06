@@ -91,7 +91,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void viewTransferHistory() {
 		try {
-			transferService.viewTransferHistory();
+			System.out.println(transferService.viewTransferHistory(currentUser.getUser().getId().longValue()));
 		} catch (TransferServiceException e) {
 			e.printStackTrace();
 			System.out.println("It looks like you don't have any transactions. Please make a transaction to view your history.");
