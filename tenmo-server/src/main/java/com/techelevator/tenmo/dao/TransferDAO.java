@@ -7,12 +7,13 @@ import com.techelevator.tenmo.model.Transfer;
 
 public interface TransferDAO {
 	
-	List<Transfer> viewOwnPastTransfers();
+	List<Transfer> viewOwnPastTransfers(Long accountId);
 	
 	Transfer viewTransferById(Long transferId);
 	
 	void sendTransfer(Long fromUserId, Long toUserId, BigDecimal amount);
 	
+	//Helper method. Not in requirements.
 	List<Transfer> getAllTransfers();
 	
 }

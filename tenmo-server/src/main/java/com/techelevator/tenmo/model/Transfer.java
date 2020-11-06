@@ -5,22 +5,12 @@ import java.math.BigDecimal;
 public class Transfer {
 	
 	private Long transferId;
-	private Long transferTypeId; //from transfer_types.transfer_type_id
-	private String transferType; //from transfer_types.transfer_type_desc
-	private Long transferStatusId; //from transfer_statuses.transfer_status_id
-	private String transferStatus; //from transfer_statuses.transfer_status_desc
-	private Long accountFrom; // this is account_id
-	
-	/* Omitting for now. implemented in SendMoneyDTO
-	 * private String accountFromUsername; //username is not stored in transfers table; would have to get from users table based on id
-	 */
-	
+	private Long transferTypeId;
+	private String transferType;
+	private Long transferStatusId;
+	private String transferStatus;
+	private Long accountFrom;
 	private Long accountTo;
-	
-	/* Omitting for now. implemented in SendMoneyDTO
-	 * private String accountToUsername; //username is not stored in transfers table; would have to get from users table based on id
-	 */
-	
 	private BigDecimal amount;
 	
 	public Long getTransferId() {
@@ -74,21 +64,6 @@ public class Transfer {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	
-	/*
-	public String viewPastTransfers() {
-		return "\n--------------------------------------------" +
-				"\n Transfers"
-				+ " ID			From/To					Amount" +
-				"\n--------------------------------------------" +
-				"\n "+ transferId + "		From"
-				"\n From: " + accountFrom +
-				"\n To: " + accountTo +
-				"\n Type: " + transferType +
-				"\n Status: " + transferStatus +
-				"\n Amount: $" + amount;
-	}
-	*/
 	
 	@Override
 	public String toString() {

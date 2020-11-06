@@ -18,16 +18,18 @@ public class TransferController {
 	public TransferController(TransferDAO transferDAO){
 		this.transferDAO = transferDAO;
 	}
-	//not working
-	@RequestMapping(value = "/transfers", method = RequestMethod.GET)
-	public List<Transfer> viewOwnPastTransfers(){
-		return transferDAO.viewOwnPastTransfers();
+	
+	@RequestMapping(value = "/accounts/{id}/transfers", method = RequestMethod.GET)
+	public List<Transfer> viewOwnPastTransfers(@PathVariable("id") Long accountId){
+		return transferDAO.viewOwnPastTransfers(accountId);
 	}
 	
 	@RequestMapping(value = "transfers/{id}", method = RequestMethod.GET)
-	public Transfer viewTransfersById(@PathVariable Long transferId) {
+	public Transfer viewTransfersById(@PathVariable("id") Long transferId) {
 		return transferDAO.viewTransferById(transferId);
 	}
+	
+	//create the sendTransfer method here
 
 	
 }

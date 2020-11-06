@@ -107,11 +107,6 @@ public class TransferSqlDAOIntegrationTest {
 		Assert.assertNull(invalidId);
 	}
 	
-	//Need to complete
-	public void sendTransfer_expectedResult_TBD() {
-		// TODO Auto-generated method stub
-	}
-	
 	@Test
 	public void getAllTransfers_returnAll() {
 		
@@ -134,9 +129,13 @@ public class TransferSqlDAOIntegrationTest {
 		List<Transfer> results = dao.getAllTransfers();
 		
 		//Assert
-		
 		Assert.assertNotEquals(null, results);
 		Assert.assertEquals(1, results.size());
 	}
+	
+	//Need to complete
+		public void sendTransfer_expectedResult_TBD() {
+			// TODO Auto-generated method stub
+		}
 
 }
