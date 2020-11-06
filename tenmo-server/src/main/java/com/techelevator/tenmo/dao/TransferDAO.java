@@ -11,7 +11,7 @@ public interface TransferDAO {
 	
 	Transfer viewTransferById(Long transferId);
 	
-	void sendTransfer(Long fromUserId, Long toUserId, BigDecimal amount);
+	boolean sendTransfer(Long fromAccountId, Long toAccountId, BigDecimal amount);
 	
 	//Helper method. Not in requirements.
 	List<Transfer> getAllTransfers();
