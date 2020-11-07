@@ -66,17 +66,21 @@ public class TransferService {
 	
 	}
 	
-	public Transfer viewTransferDetails(int choice) throws TransferServiceException {
-		//use this in a try block
+	public Transfer viewTransferDetails(Long accountId, Long transferId) throws TransferServiceException {
+		
 		Transfer transfer = null;
 		try {
-			transfer = restTemplate.exchange(BASE_URL + "transfers/"+ choice, HttpMethod.GET, makeAuthEntity(), Transfer.class).getBody();
+			transfer = restTemplate.exchange(BASE_URL + "transfers/"+ transferId, HttpMethod.GET, makeAuthEntity(), Transfer.class).getBody();
+			
+			if(transfer.getAccountFrom() == accountId || transfer.getAccountTo() == accountId) {
+				return transfer;
+			} else {
+				return null;
+			}
+			
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
-		
-		return transfer;
-		
 		
 	}
 	

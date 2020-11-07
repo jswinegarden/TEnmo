@@ -49,6 +49,24 @@ public class TransferSqlDAO implements TransferDAO {
 	@Override
 	public Transfer viewTransferById(Long transferId) {
 		
+//		String sql = "SELECT t.transfer_id, t.transfer_type_id, tt.transfer_type_desc, t.transfer_status_id, ts.transfer_status_desc, " +
+//				"t.account_from, t.account_to, t.amount " +
+//				"FROM transfers t " +
+//				"INNER JOIN transfer_types tt ON tt.transfer_type_id = t.transfer_type_id " +
+//				"INNER JOIN transfer_statuses ts ON ts.transfer_status_id = t.transfer_status_id " +
+//				"WHERE (t.account_from IN (SELECT account_id FROM accounts WHERE account_id = ?) " +
+//				"OR t.account_to IN (SELECT account_id FROM accounts WHERE account_id = ?)) " +
+//				"AND t.transfer_id = ? "; 
+//		
+//		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId, accountId, transferId);
+//		
+//		if(results.next()) {
+//			Transfer transfer = mapRowToTransfer(results);
+//			return transfer;
+//		}
+//		
+//		return null;
+
 		for (Transfer transfer : this.getAllTransfers()) {
 			if (transfer.getTransferId() == transferId) {
 				return transfer;

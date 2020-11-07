@@ -97,11 +97,18 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		try {
 			transferService.viewTransferHistory(currentUser.getUser().getId().longValue());
 			int choice = console.getUserInputInteger(VIEW_TRANSFER_DETAILS);
+			Long transferId = (long)choice;
+			
 			if (choice != 0) {
-				System.out.println(transferService.viewTransferDetails(choice));
-			} else {
-				mainMenu();
-			}
+				Transfer transfer = transferService.viewTransferDetails(currentUser.getUser().getId().longValue(), transferId);
+				if (transfer != null) {
+					 System.out.println(transfer);
+				} else {
+						System.out.println("Invalid Selection. Please try again.");
+					}
+				}
+			
+			mainMenu();
 			
 		} catch (TransferServiceException e) {
 			e.printStackTrace();
