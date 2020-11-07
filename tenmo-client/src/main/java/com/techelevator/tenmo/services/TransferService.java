@@ -30,20 +30,32 @@ public class TransferService {
 			transfers = restTemplate.exchange(BASE_URL + "accounts/"+ accountId +"/transfers", 
 					HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
 		
+//			System.out.println("----------------------------------------------");
+//			System.out.println("Transfers\t From/To \t\t Amount");
+//			System.out.println("ID");
+//			System.out.println("----------------------------------------------");
+			
 			System.out.println("----------------------------------------------");
-			System.out.println("Transfers\t From/To \t\t Amount");
-			System.out.println("ID");
+			String heading1 = "Transfers ID";
+			String heading2 = "From/To";
+			String heading3 = "Amount";
+			System.out.printf( "%-15s %10s %15s %n", heading1, heading2, heading3);
 			System.out.println("----------------------------------------------");
 			
 			for(int i = 0; i < transfers.length; i++) {
 				if(transfers[i].getAccountFrom()==accountId){
 					
-					System.out.println(transfers[i].getTransferId()+"        \t To: "+
-										transfers[i].getAccountTo()+ "        \t\t $"+transfers[i].getAmount());
+					System.out.printf("%-15s %10s %15s %n",transfers[i].getTransferId(), "To: "+transfers[i].getAccountTo(), transfers[i].getAmount());
+					
+//					System.out.println(transfers[i].getTransferId()+"        \t To: "+
+//										transfers[i].getAccountTo()+ "        \t\t $"+transfers[i].getAmount());
 				
 				} else if (transfers[i].getAccountTo()==accountId){
-					System.out.println(transfers[i].getTransferId()+"        \t From: "+
-										transfers[i].getAccountFrom()+"      \t\t $"+transfers[i].getAmount());
+					
+					System.out.printf("%-15s %10s %15s %n",transfers[i].getTransferId(), "From: "+transfers[i].getAccountFrom(), transfers[i].getAmount());
+					
+//					System.out.println(transfers[i].getTransferId()+"        \t From: "+
+//										transfers[i].getAccountFrom()+"      \t\t $"+transfers[i].getAmount());
 				}	
 			}
 			
