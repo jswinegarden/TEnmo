@@ -29,6 +29,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private static final String MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS = "View your pending requests";
 	private static final String MAIN_MENU_OPTION_LOGIN = "Login as different user";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_VIEW_BALANCE, MAIN_MENU_OPTION_SEND_BUCKS, MAIN_MENU_OPTION_VIEW_PAST_TRANSFERS, MAIN_MENU_OPTION_REQUEST_BUCKS, MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS, MAIN_MENU_OPTION_LOGIN, MENU_OPTION_EXIT };
+	private static final String VIEW_TRANSFER_DETAILS = "Please enter transfer ID to view details (0 to cancel)";
 	
     private AuthenticatedUser currentUser;
     private ConsoleService console;
@@ -91,7 +92,14 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void viewTransferHistory() {
 		try {
-			System.out.println(transferService.viewTransferHistory(currentUser.getUser().getId().longValue()));
+			transferService.viewTransferHistory(currentUser.getUser().getId().longValue());
+			int choice = console.getUserInputInteger(VIEW_TRANSFER_DETAILS);
+			if (choice != 0) {
+				System.out.println(transferService.viewTransferDetails(choice));
+			} else {
+				mainMenu();
+			}
+			
 		} catch (TransferServiceException e) {
 			e.printStackTrace();
 			System.out.println("It looks like you don't have any transactions. Please make a transaction to view your history.");
