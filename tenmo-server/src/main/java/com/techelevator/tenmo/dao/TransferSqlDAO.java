@@ -47,13 +47,22 @@ public class TransferSqlDAO implements TransferDAO {
 	}
 
 	@Override
-	public Transfer viewTransferById(Long accountId) {
+	public Transfer viewTransferById(Long transferId) {
+		
 		for (Transfer transfer : this.getAllTransfers()) {
-			if (transfer.getTransferId() == accountId) {
+			if (transfer.getTransferId() == transferId) {
 				return transfer;
 			}
 		}
 		return null;
+		
+//		for (Transfer transfer : this.getAllTransfers()) {
+//			if (transfer.getTransferId() == transferId &&
+//					(transfer.getAccountFrom() == accountId || transfer.getAccountTo() == accountId)) {
+//				return transfer;
+//			}
+//		}
+//		return null;
 	}
 
 	@Override

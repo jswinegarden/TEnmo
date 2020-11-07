@@ -1,6 +1,8 @@
 package com.techelevator.tenmo.services;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.http.HttpEntity;
@@ -21,16 +23,49 @@ public class TransferService {
 	public TransferService(String url) {
 		BASE_URL = url;
 	}
-	
-	public Transfer[] viewTransferHistory(Long accountId) throws TransferServiceException {
+
+	public void viewTransferHistory(Long accountId) throws TransferServiceException {
 		Transfer[] transfers = null;
 		try {
-			transfers = restTemplate.getForObject(BASE_URL + "accounts/"+ accountId +"/transfers", Transfer[].class);
-//			transfers = restTemplate.exchange(BASE_URL + "accounts/"+ accountId +"/transfers", HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
+			transfers = restTemplate.exchange(BASE_URL + "accounts/"+ accountId +"/transfers", 
+					HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
+		
+			System.out.println("----------------------------------------------");
+			System.out.println("Transfers\t From/To \t\t Amount");
+			System.out.println("ID");
+			System.out.println("----------------------------------------------");
+			
+			for(int i = 0; i < transfers.length; i++) {
+				if(transfers[i].getAccountFrom()==accountId){
+					
+					System.out.println(transfers[i].getTransferId()+"        \t To: "+
+										transfers[i].getAccountTo()+ "        \t\t $"+transfers[i].getAmount());
+				
+				} else if (transfers[i].getAccountTo()==accountId){
+					System.out.println(transfers[i].getTransferId()+"        \t From: "+
+										transfers[i].getAccountFrom()+"      \t\t $"+transfers[i].getAmount());
+				}	
+			}
+			
+			System.out.println("");
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
-		return transfers;
+	
+	}
+	
+	public Transfer viewTransferDetails(int choice) throws TransferServiceException {
+		//use this in a try block
+		Transfer transfer = null;
+		try {
+			transfer = restTemplate.exchange(BASE_URL + "transfers/"+ choice, HttpMethod.GET, makeAuthEntity(), Transfer.class).getBody();
+		} catch (RestClientResponseException ex) {
+			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
+		}
+		
+		return transfer;
+		
+		
 	}
 	
 	public Transfer sendBucks(String newTransfer) throws TransferServiceException {
