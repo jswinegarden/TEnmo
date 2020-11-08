@@ -44,7 +44,7 @@ public class AccountSQLDAO implements AccountDAO {
 		}
 		String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
 		BigDecimal diff = account.subtract(sub);
-		return jdbcTemplate.update(sql, diff) == 1;
+		return jdbcTemplate.update(sql, diff) == 1; //from
 	}
 	
 	@Override

@@ -24,7 +24,7 @@ public class TransferService {
 		BASE_URL = url;
 	}
 
-	public void viewTransferHistory(Long accountId) throws TransferServiceException {
+	public Transfer[] viewTransferHistory(Long accountId) throws TransferServiceException {
 		Transfer[] transfers = null;
 		try {
 			transfers = restTemplate.exchange(BASE_URL + "accounts/"+ accountId +"/transfers", 
@@ -45,12 +45,13 @@ public class TransferService {
 					System.out.println(transfers[i].getTransferId()+"        \t From: "+
 										transfers[i].getAccountFrom()+"      \t\t $"+transfers[i].getAmount());
 				}	
-			}
+			} 
 			
 			System.out.println("");
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
+		return transfers;
 	
 	}
 	
@@ -79,7 +80,7 @@ public class TransferService {
 	}
 	
 	private Transfer makeTransfer(String CSV) {
-		
+		Long accountId = null;
 		String[] parsed = CSV.split(",");
 		BigDecimal transferAmount = new BigDecimal(parsed[7]);
 		
@@ -91,7 +92,7 @@ public class TransferService {
 			String[] withId = new String[9];
 			Transfer[] transfers = new Transfer[0];
 			try {
-				transfers = viewTransferHistory();
+				transfers = viewTransferHistory(accountId);
 			} catch (TransferServiceException e) {
 				e.printStackTrace();
 			}
