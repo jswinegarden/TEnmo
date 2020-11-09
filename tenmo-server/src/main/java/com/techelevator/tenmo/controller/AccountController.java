@@ -39,14 +39,16 @@ public class AccountController {
 }
 	
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-	public boolean updateSenderAccountBalance(@PathVariable("id") @RequestBody Long accountId, BigDecimal amount, BigDecimal accountBalance) {
-		accountDAO.updateSenderAccountBalance(accountId, amount, accountBalance);
-		accountDAO.updateReceiverAccountBalance(accountId, amount, accountBalance);
-		return true;
+	public Account updateSenderAccountBalance(@PathVariable("id") Long fromAccountId, Long toAccountId, @RequestBody Account updatedAccount) {
+		accountDAO.updateSenderAccountBalance(fromAccountId, updatedAccount);
+		accountDAO.updateReceiverAccountBalance(toAccountId, updatedAccount);
+		
+		return updatedAccount;
 	}
-	
-//	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-//	public boolean updateReceiverAccountBalance(@PathVariable("id") @RequestBody Long accountId, BigDecimal amount, BigDecimal accountBalance) {
-//		return accountDAO.updateReceiverAccountBalance(accountId, amount, accountBalance);
-////	}
+	/*
+	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+	public Account updateReceiverAccountBalance(@PathVariable("id") Long toAccountId, @RequestBody Account account ) {
+		return accountDAO.updateReceiverAccountBalance(toAccountId, account);
+	}
+	*/
 }

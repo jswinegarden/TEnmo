@@ -9,9 +9,13 @@ public interface AccountDAO {
 	
 	Account viewCurrentBalance(Long accountId);
 	
-	boolean updateSenderAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance);
+//	boolean updateSenderAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance);
 	
-	boolean updateReceiverAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance);
+	Account updateSenderAccountBalance(Long fromAccountId, Account updatedAccount);
+	
+//	boolean updateReceiverAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance);
+	
+	Account updateReceiverAccountBalance(Long toAccountId, Account updatedAccount);
 	
 	
 	
