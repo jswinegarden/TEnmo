@@ -17,40 +17,37 @@ import com.techelevator.tenmo.dao.AccountDAO;
 import com.techelevator.tenmo.dao.AccountSQLDAO;
 import com.techelevator.tenmo.model.Account;
 
-//@PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
 	
 	private AccountDAO accountDAO;
-//	public AccountController () {
-//		this.accountDAO = new AccountSQLDAO(null);
-//
-//	}
 	
 	public AccountController (AccountDAO accountDAO) {
 		this.accountDAO = accountDAO;
 	}
 	
-	//@PreAuthorize("hasRole('USER')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public Account viewCurrentBalance(@PathVariable("id") Long accountId) {
 		return accountDAO.viewCurrentBalance(accountId);
-}
+	}
 	
+	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+	public Account updateBalance(@PathVariable("id") Long accountId, @RequestBody Account updatedAccount) {
+		accountDAO.updateBalance(accountId, updatedAccount);
+		
+		return updatedAccount;
+	}
+	
+	//Old code to be deleted:
+	/*
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	public Account updateSenderAccountBalance(@PathVariable("id") Long accountId, @RequestBody Account account) {
 		accountDAO.updateSenderAccountBalance(accountId, account);
 		accountDAO.updateReceiverAccountBalance(accountId, account);
 		return account;
 	}
-		
-//	public Account updateSenderAccountBalance(@PathVariable("id") Long fromAccountId, Long toAccountId, @RequestBody Account updatedAccount) {
-//		accountDAO.updateSenderAccountBalance(fromAccountId, updatedAccount);
-//		accountDAO.updateReceiverAccountBalance(toAccountId, updatedAccount);
-//		
-//		return updatedAccount;
-//	}
+	*/
 	/*
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	public Account updateReceiverAccountBalance(@PathVariable("id") Long toAccountId, @RequestBody Account account ) {

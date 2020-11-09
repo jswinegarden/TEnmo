@@ -160,19 +160,14 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		toUser = scanner.nextLong();
 		
 		System.out.print("\nEnter amount to send (without the dollar sign): ");
-		amount = scanner.nextBigDecimal(); 
+		amount = scanner.nextBigDecimal();
 		
 		try {
-			transferService.sendBucks(fromUser, toUser, amount);
-			//if(fromUser == currentUser.getUser().getId().longValue()) {
-			accountService.updateSenderAccountBalance(fromUser, amount);
-			//} 
-			//if(toUser != currentUser.getUser().getId().longValue()) {
-			accountService.updateReceiverAccountBalance(toUser, amount);
-			//}
+				System.out.println("Send unsuccessful. You cannot send money to yourself, and you must have sufficient balance to send money.");
+			}
+
 		} catch (TransferServiceException | AccountServiceException e) {
 			e.printStackTrace();
-			System.out.println("It looks like the transfer didn't go through. Make sure you have enough money in your account to make this transfer, and all your transfer data is entered properly");
 		}
 		
 	}
@@ -180,7 +175,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private void requestBucks() {
 		// TODO Auto-generated method stub
 		//Optional
-		
 	}
 	
 	private void exitProgram() {

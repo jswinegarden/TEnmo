@@ -36,17 +36,23 @@ public class AccountSQLDAO implements AccountDAO {
 	}
 	
 	@Override
-//	public Account updateSenderAccountBalance(Account account, Long accountId) {  
-//		Transfer transfer = null;
-//		BigDecimal accountBalance = account.getAccountBalance();
-//		BigDecimal sub = transfer.getAmount();
-//		if((accountBalance.compareTo(sub) >= 0)) {
-//			String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
-//			BigDecimal diff = accountBalance.subtract(sub);
-//		}
-//		
-//		return account;
-//	}
+	public Account updateBalance(Long accountId, Account updatedAccount) {
+		String sql = "UPDATE accounts SET balance = ? WHERE account_id = ?";
+		jdbcTemplate.update(sql, updatedAccount.getAccountBalance(), accountId);
+		
+		return updatedAccount;
+	}
+
+	private Account mapRowToAccount(SqlRowSet rs) {
+		Account account = new Account();
+		account.setAccountId(rs.getLong("account_id"));
+		account.setUserId(rs.getLong("user_id"));
+		account.setAccountBalance(rs.getBigDecimal("balance"));
+		return account;
+	}
+
+	/*
+	@Override
 	public Account updateSenderAccountBalance(Long fromAccountId, Account updatedFromAccount) {  
 		BigDecimal currentAmount = null;
 		String sqlSelect = "SELECT balance FROM accounts WHERE account_id = ?";
@@ -61,7 +67,7 @@ public class AccountSQLDAO implements AccountDAO {
 		
 		return updatedFromAccount;
 		
-		/*
+		
 		BigDecimal account = accountBalance;
 		BigDecimal sub = amount;
 		if((account.compareTo(sub) == - 1)) {
@@ -70,7 +76,7 @@ public class AccountSQLDAO implements AccountDAO {
 		String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
 		BigDecimal diff = account.subtract(sub);
 		return jdbcTemplate.update(sql, diff) == 1;
-		*/
+		
 	}
 	
 	@Override
@@ -89,6 +95,8 @@ public class AccountSQLDAO implements AccountDAO {
 		return updatedToAccount;
 	}
 	
+	*/
+	
 	/*
 	@Override
 	public Account updateReceiverAccountBalance(Account account, Long accountId) { 
@@ -101,16 +109,6 @@ public class AccountSQLDAO implements AccountDAO {
 		return account;
 	}
 	*/
-	
-
-private Account mapRowToAccount(SqlRowSet rs) {
-    Account account = new Account();
-    account.setAccountId(rs.getLong("account_id"));
-    account.setUserId(rs.getLong("user_id"));
-    account.setAccountBalance(rs.getBigDecimal("balance"));
-    return account;
-}
-
 
 
 
