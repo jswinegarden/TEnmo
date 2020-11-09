@@ -27,30 +27,56 @@ public class TransferService {
 		BASE_URL = url;
 	}
 
+<<<<<<< HEAD
 	public Transfer[] viewTransferHistory() throws TransferServiceException {
+=======
+	public boolean viewTransferHistory(Long accountId) throws TransferServiceException {
+		boolean hasHistory = false;
+		
+>>>>>>> 950716b8d888ecae464697d3fdcae5bd5cbc94cc
 		Transfer[] transfers = null;
 		try {
 			transfers = restTemplate.exchange(BASE_URL + "accounts/"+ account.getAccountId() +"/transfers", 
 					HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
 		
-			System.out.println("----------------------------------------------");
-			System.out.println("Transfers\t From/To \t\t Amount");
-			System.out.println("ID");
-			System.out.println("----------------------------------------------");
+			if (transfers.length == 0 || transfers == null) {
+				return hasHistory;
 			
+<<<<<<< HEAD
 			for(int i = 0; i < transfers.length; i++) {
 				if(transfers[i].getAccountFrom()==account.getAccountId()){
-					
-					System.out.println(transfers[i].getTransferId()+"        \t To: "+
-										transfers[i].getAccountTo()+ "        \t\t $"+transfers[i].getAmount());
+=======
+			} else {
+				hasHistory = true;
 				
+				System.out.println("----------------------------------------------");
+				String heading1 = "Transfers ID";
+				String heading2 = "From/To";
+				String heading3 = "Amount";
+				System.out.printf( "%-15s %10s %15s %n", heading1, heading2, heading3);
+				System.out.println("----------------------------------------------");
+				
+				for(int i = 0; i < transfers.length; i++) {
+					if(transfers[i].getAccountFrom() == accountId){
+						System.out.printf("%-15s %10s %15s %n",transfers[i].getTransferId(), "To: "+transfers[i].getToUsername(), "$"+transfers[i].getAmount());
+>>>>>>> 950716b8d888ecae464697d3fdcae5bd5cbc94cc
+					
+					} else if (transfers[i].getAccountTo() == accountId){
+						System.out.printf("%-15s %10s %15s %n",transfers[i].getTransferId(), "From: "+transfers[i].getFromUsername(), "$"+transfers[i].getAmount());
+					}
+					
+				}
+				System.out.println("---------");
+				return hasHistory;
+				
+<<<<<<< HEAD
 				} else if (transfers[i].getAccountTo()==account.getAccountId()){
 					System.out.println(transfers[i].getTransferId()+"        \t From: "+
 										transfers[i].getAccountFrom()+"      \t\t $"+transfers[i].getAmount());
 				}	
+=======
+>>>>>>> 950716b8d888ecae464697d3fdcae5bd5cbc94cc
 			}
-			
-			System.out.println("");
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
@@ -58,17 +84,19 @@ public class TransferService {
 	
 	}
 	
-	public Transfer viewTransferDetails(int choice) throws TransferServiceException {
-		//use this in a try block
+	public Transfer viewTransferDetails(Long accountId, Long transferId) throws TransferServiceException {
+		
 		Transfer transfer = null;
 		try {
-			transfer = restTemplate.exchange(BASE_URL + "transfers/"+ choice, HttpMethod.GET, makeAuthEntity(), Transfer.class).getBody();
+			transfer = restTemplate.exchange(BASE_URL + "transfers/"+ transferId, HttpMethod.GET, makeAuthEntity(), Transfer.class).getBody();
+			if (transfer != null && (transfer.getAccountFrom() == accountId || transfer.getAccountTo() == accountId)) {
+				return transfer;
+			} else {
+				return null;
+			}
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
-		
-		return transfer;
-		
 		
 	}
 	
@@ -126,5 +154,4 @@ public class TransferService {
 		return entity;
 	}
 	
-
 }
