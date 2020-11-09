@@ -32,20 +32,11 @@ public class AccountService {
 		return account;
 	}
 	
-	public Account updateSenderAccountBalance(Long fromUserId, BigDecimal amount) throws AccountServiceException {
-		Account account = new Account (fromUserId, fromUserId, amount);
+	public Account updateBalance(Long accountId, BigDecimal amount) throws AccountServiceException {
+		Account account = new Account(accountId, accountId, amount);
+		
 		try {
-			account = restTemplate.exchange(BASE_URL + "accounts/" + fromUserId, HttpMethod.PUT, makeAccountEntity(account), Account.class).getBody();
-		} catch (RestClientResponseException ex) {
-			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
-		}
-		return account;
-	}
-	
-	public Account updateReceiverAccountBalance(Long toUserId, BigDecimal amount) throws AccountServiceException {
-		Account account = new Account (toUserId, toUserId, amount);
-		try {
-			account = restTemplate.exchange(BASE_URL + "accounts/" + toUserId, HttpMethod.PUT, makeAccountEntity(account), Account.class).getBody();
+			account = restTemplate.exchange(BASE_URL + "accounts/" + accountId, HttpMethod.PUT, makeAccountEntity(account), Account.class).getBody();
 		} catch (RestClientResponseException ex) {
 			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
@@ -66,4 +57,28 @@ public class AccountService {
 		HttpEntity entity = new HttpEntity<>(headers);
 		return entity;
 	}
+	
+	//Old code, to be deleted:
+	
+	/*
+	public Account updateSenderAccountBalance(Long fromUserId, BigDecimal amount) throws AccountServiceException {
+		Account account = new Account (fromUserId, fromUserId, amount);
+		try {
+			account = restTemplate.exchange(BASE_URL + "accounts/" + fromUserId, HttpMethod.PUT, makeAccountEntity(account), Account.class).getBody();
+		} catch (RestClientResponseException ex) {
+			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
+		}
+		return account;
+	}
+	
+	public Account updateReceiverAccountBalance(Long toUserId, BigDecimal amount) throws AccountServiceException {
+		Account account = new Account (toUserId, toUserId, amount);
+		try {
+			account = restTemplate.exchange(BASE_URL + "accounts/" + toUserId, HttpMethod.PUT, makeAccountEntity(account), Account.class).getBody();
+		} catch (RestClientResponseException ex) {
+			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
+		}
+		return account;
+	}
+	*/
 }

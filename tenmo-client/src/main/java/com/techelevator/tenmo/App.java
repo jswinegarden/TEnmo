@@ -152,15 +152,23 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		toUser = scanner.nextLong();
 		
 		System.out.print("\nEnter amount to send (without the dollar sign): ");
-		amount = scanner.nextBigDecimal(); 
+		amount = scanner.nextBigDecimal();
 		
 		try {
-			transferService.sendBucks(fromUser, toUser, amount);
-			accountService.updateSenderAccountBalance(fromUser, amount);
-			accountService.updateReceiverAccountBalance(toUser, amount);
+			BigDecimal currentUserBalance = accountService.viewCurrentBalance(fromUser).getAccountBalance();
+			BigDecimal newFromUserBalance = currentUserBalance.subtract(amount);
+			BigDecimal newToUserBalance = accountService.viewCurrentBalance(toUser).getAccountBalance().add(amount);
+			
+			if(currentUserBalance.compareTo(amount) >= 0 && fromUser != toUser) {
+				transferService.sendBucks(fromUser, toUser, amount);
+				accountService.updateBalance(fromUser, newFromUserBalance);
+				accountService.updateBalance(toUser, newToUserBalance);
+			} else {
+				System.out.println("Send unsuccessful. You cannot send money to yourself, and you must have sufficient balance to send money.");
+			}
+
 		} catch (TransferServiceException | AccountServiceException e) {
 			e.printStackTrace();
-			System.out.println("It looks like the transfer didn't go through. Make sure you have enough money in your account to make this transfer, and all your transfer data is entered properly");
 		}
 	}
 

@@ -97,6 +97,22 @@ public class TransferService {
 		return transfer;
 	}
 	
+	private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setBearerAuth(AUTH_TOKEN);
+		HttpEntity<Transfer> entity = new HttpEntity<>(transfer, headers);
+		return entity;
+	}
+	
+	private HttpEntity makeAuthEntity() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setBearerAuth(AUTH_TOKEN);
+		HttpEntity entity = new HttpEntity<>(headers);
+		return entity;
+	}
+	
+	//Old code to be deleted:
 	/*
 	private Transfer makeTransfer(String CSV) {
 		
@@ -137,20 +153,5 @@ public class TransferService {
 		return new Transfer(transferTypeId, transferStatusId, Long.parseLong(parsed[0].trim()), Long.parseLong(parsed[1].trim()), transferAmount);
 	}
 	*/
-	
-	private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setBearerAuth(AUTH_TOKEN);
-		HttpEntity<Transfer> entity = new HttpEntity<>(transfer, headers);
-		return entity;
-	}
-	
-	private HttpEntity makeAuthEntity() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setBearerAuth(AUTH_TOKEN);
-		HttpEntity entity = new HttpEntity<>(headers);
-		return entity;
-	}
 	
 }

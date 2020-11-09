@@ -136,6 +136,8 @@ public class TransferSqlDAOIntegrationTest {
 		Assert.assertNotEquals(null, results);
 		Assert.assertEquals(1, results.size());
 	}
+	
+	/*
 
 	@Test
 	public void sendTransfer_returnTransfer() {
@@ -159,5 +161,7 @@ public class TransferSqlDAOIntegrationTest {
 		//Assert
 		Assert.assertEquals(1, dao.getAllTransfers().size());
 	}
+	
+	*/
 
 }
