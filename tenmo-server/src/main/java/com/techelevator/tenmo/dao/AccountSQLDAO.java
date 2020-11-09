@@ -36,24 +36,27 @@ public class AccountSQLDAO implements AccountDAO {
 	}
 	
 	@Override
-	public boolean updateSenderAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance) {  
-		BigDecimal account = accountBalance;
-		BigDecimal sub = amount;
-		if((account.compareTo(sub) == - 1)) {
-			return false;
+	public Account updateSenderAccountBalance(Account account, Long accountId) {  
+		Transfer transfer = null;
+		BigDecimal accountBalance = account.getAccountBalance();
+		BigDecimal sub = transfer.getAmount();
+		if((accountBalance.compareTo(sub) >= 0)) {
+			String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
+			BigDecimal diff = accountBalance.subtract(sub);
 		}
-		String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
-		BigDecimal diff = account.subtract(sub);
-		return jdbcTemplate.update(sql, diff) == 1;
+		
+		return account;
 	}
 	
 	@Override
-	public boolean updateReceiverAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance) { 
+	public Account updateReceiverAccountBalance(Account account, Long accountId) { 
+		Transfer transfer = null;
 		String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
-		BigDecimal account = accountBalance;
-		BigDecimal add = amount;
-		BigDecimal sum = account.add(add);
-		return jdbcTemplate.update(sql, sum) == 1;
+		BigDecimal accountBalance = account.getAccountBalance();
+		BigDecimal add = transfer.getAmount();
+		BigDecimal sum = accountBalance.add(add);
+		jdbcTemplate.update(sql, sum);
+		return account;
 	}
 	
 

@@ -80,7 +80,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 				System.out.println("Feature coming soon!");
 				//viewPendingRequests();
 			} else if(MAIN_MENU_OPTION_SEND_BUCKS.equals(choice)) {
-				sendBucks();
+				try {
+					sendBucks();
+				} catch (TransferServiceException e) {
+					e.printStackTrace();
+				}
 			} else if(MAIN_MENU_OPTION_REQUEST_BUCKS.equals(choice)) {
 				System.out.println("Feature coming soon!");
 				//requestBucks();
@@ -138,7 +142,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		
 	}
 
-	private void sendBucks() {
+	private void sendBucks() throws TransferServiceException {
 		
 		User[] users = null;
 		try {
@@ -163,6 +167,18 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		} catch (TransferServiceException e) {
 			e.printStackTrace();
 			System.out.println("It looks like the transfer didn't go through. Make sure you have enough money in your account to make this transfer, and all your transfer data is entered properly");
+		}
+		
+		try {
+			accountService.updateSenderAccountBalance(fromUser);
+		} catch (AccountServiceException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			accountService.updateReceiverAccountBalance(toUser);
+		} catch (AccountServiceException e) {
+			e.printStackTrace();
 		}
 	}
 

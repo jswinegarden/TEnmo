@@ -16,9 +16,7 @@ public class Transfer {
 	private String fromUsername;
 	private String toUsername;
 	
-	public Transfer(Long transferId2, long l, long m, Long transferTypeId2, Transfer transfer, BigDecimal transferAmount) {
-		
-	}
+	public Transfer() {}
 	
 	/*
 	public Transfer(Long transferId, Long transferTypeId, String transferType, Long transferStatusId, String transferStatus,
@@ -40,10 +38,6 @@ public class Transfer {
 		this.accountFrom = accountFrom;
 		this.accountTo = accountTo;
 		this.amount = amount;
-	}
-	
-	public Transfer(Long transferId2, Long userId, long parseLong, Long transferTypeId2, Transfer transfer,
-			BigDecimal transferAmount) {
 	}
 
 	public Long getTransferId() {

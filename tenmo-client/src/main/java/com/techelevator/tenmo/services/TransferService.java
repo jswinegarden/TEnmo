@@ -94,7 +94,7 @@ public class TransferService {
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
-		return newTransfer;
+		return transfer;
 	}
 	
 	/*
