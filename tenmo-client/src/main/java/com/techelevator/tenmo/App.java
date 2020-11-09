@@ -25,8 +25,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private static final String MAIN_MENU_OPTION_VIEW_BALANCE = "View your current balance";
 	private static final String MAIN_MENU_OPTION_SEND_BUCKS = "Send TE bucks";
 	private static final String MAIN_MENU_OPTION_VIEW_PAST_TRANSFERS = "View your past transfers";
-	private static final String MAIN_MENU_OPTION_REQUEST_BUCKS = "Request TE bucks (Future Feature)";
-	private static final String MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS = "View your pending requests (Futuer Feature)";
+	private static final String MAIN_MENU_OPTION_REQUEST_BUCKS = "Request TE bucks (Feature Coming Soon!)";
+	private static final String MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS = "View your pending requests (Feature Coming Soon!)";
 	private static final String MAIN_MENU_OPTION_LOGIN = "Login as different user";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_VIEW_BALANCE, MAIN_MENU_OPTION_SEND_BUCKS, MAIN_MENU_OPTION_VIEW_PAST_TRANSFERS, MAIN_MENU_OPTION_REQUEST_BUCKS, MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS, MAIN_MENU_OPTION_LOGIN, MENU_OPTION_EXIT };
 	private static final String VIEW_CURRENT_BALANCE = "Your current account balance is: $";
@@ -53,6 +53,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		System.out.println("*********************");
 		System.out.println("* Welcome to TEnmo! *");
 		System.out.println("*********************");
+		
+		
 		
 		registerAndLogin();
 		mainMenu();

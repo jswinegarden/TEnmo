@@ -36,7 +36,6 @@ public class TransferService {
 				return hasHistory;
 			
 			} else {
-				
 				hasHistory = true;
 				
 				System.out.println("----------------------------------------------");
@@ -47,18 +46,15 @@ public class TransferService {
 				System.out.println("----------------------------------------------");
 				
 				for(int i = 0; i < transfers.length; i++) {
-					if(transfers[i].getAccountFrom()==accountId){
+					if(transfers[i].getAccountFrom() == accountId){
 						System.out.printf("%-15s %10s %15s %n",transfers[i].getTransferId(), "To: "+transfers[i].getToUsername(), "$"+transfers[i].getAmount());
-						
 					
-					} else if (transfers[i].getAccountTo()==accountId){
+					} else if (transfers[i].getAccountTo() == accountId){
 						System.out.printf("%-15s %10s %15s %n",transfers[i].getTransferId(), "From: "+transfers[i].getFromUsername(), "$"+transfers[i].getAmount());
-						
-					}	
+					}
+					
 				}
-				
-				System.out.println("");
-				
+				System.out.println("---------");
 				return hasHistory;
 				
 			}
@@ -78,8 +74,6 @@ public class TransferService {
 			} else {
 				return null;
 			}
-			
-			
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}

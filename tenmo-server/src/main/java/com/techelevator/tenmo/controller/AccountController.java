@@ -44,6 +44,4 @@ public class AccountController {
 		accountDAO.updateSenderAccountBalance(accountId, amount, accountBalance);
 		return true;
 	}
-
-	
 }
