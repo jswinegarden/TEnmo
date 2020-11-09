@@ -30,6 +30,26 @@ public class AccountService {
 		return account;
 	}
 	
+	public Account updateSenderAccountBalance(Long fromUserId) throws AccountServiceException {
+		Account account = null;
+		try {
+			account = restTemplate.exchange(BASE_URL + "accounts/" + fromUserId, HttpMethod.PUT, makeAuthEntity(), Account.class).getBody();
+		} catch (RestClientResponseException ex) {
+			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
+		}
+		return account;
+	}
+	
+	public Account updateReceiverAccountBalance(Long toUserId) throws AccountServiceException {
+		Account account = null;
+		try {
+			account = restTemplate.exchange(BASE_URL + "accounts/" + toUserId, HttpMethod.PUT, makeAuthEntity(), Account.class).getBody();
+		} catch (RestClientResponseException ex) {
+			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
+		}
+		return account;
+	}
+	
 	
 	private HttpEntity makeAuthEntity() {
 		HttpHeaders headers = new HttpHeaders();

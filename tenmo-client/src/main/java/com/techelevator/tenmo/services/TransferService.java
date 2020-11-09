@@ -87,7 +87,7 @@ public class TransferService {
 	public Transfer sendBucks(String newTransfer) throws TransferServiceException {
 		Transfer transfer = makeTransfer(newTransfer);
 		try {
-			transfer = restTemplate.postForObject(BASE_URL + "accounts/" + transfer.getTransferId() + "/transfers", makeTransferEntity(transfer), Transfer.class);
+			transfer = restTemplate.exchange(BASE_URL + "accounts/transfers", HttpMethod.PUT, makeTransferEntity(transfer), Transfer.class).getBody();
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}

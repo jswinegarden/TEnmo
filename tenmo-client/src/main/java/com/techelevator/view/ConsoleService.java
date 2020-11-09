@@ -86,7 +86,7 @@ public class ConsoleService {
 		}
 	}
 	
-	public String promptForTransferData(Transfer transfer) {
+	public String promptForTransferData(Transfer transfer, Long currentUserId) {
 		String transferString;
 		System.out.println("----------------------------------------");
 		System.out.println("Enter user ID and amount to send in comma separated list:");
@@ -98,7 +98,7 @@ public class ConsoleService {
 		System.out.println("----------------------------------------");
 		transferString = scanner.nextLine();
 		if (transfer != null) {
-			transferString = transfer.getTransferId() + "," + transfer.getTransferTypeId() + "," + transfer.getTransferType() + "," + transfer.getTransferStatusId() + "," + transfer.getTransferStatus()+ "," + transfer.getAccountFrom() + "," + transferString;
+			transferString = currentUserId + transferString;
 		}
 		return transferString;
 	}

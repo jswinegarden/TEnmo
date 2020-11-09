@@ -142,7 +142,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			e.printStackTrace();
 		}
 		console.printUsers(users);
-		String newTransferString = console.promptForTransferData(null);
+		String newTransferString = console.promptForTransferData(null, currentUser.getUser().getId().longValue());
 		try {
 			Transfer transfer = transferService.sendBucks(newTransferString);
 		} catch (TransferServiceException e) {
