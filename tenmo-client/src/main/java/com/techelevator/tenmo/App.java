@@ -25,10 +25,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private static final String MAIN_MENU_OPTION_VIEW_BALANCE = "View your current balance";
 	private static final String MAIN_MENU_OPTION_SEND_BUCKS = "Send TE bucks";
 	private static final String MAIN_MENU_OPTION_VIEW_PAST_TRANSFERS = "View your past transfers";
-	private static final String MAIN_MENU_OPTION_REQUEST_BUCKS = "Request TE bucks";
-	private static final String MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS = "View your pending requests";
+	private static final String MAIN_MENU_OPTION_REQUEST_BUCKS = "Request TE bucks (Feature Coming Soon!)";
+	private static final String MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS = "View your pending requests (Feature Coming Soon!)";
 	private static final String MAIN_MENU_OPTION_LOGIN = "Login as different user";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_VIEW_BALANCE, MAIN_MENU_OPTION_SEND_BUCKS, MAIN_MENU_OPTION_VIEW_PAST_TRANSFERS, MAIN_MENU_OPTION_REQUEST_BUCKS, MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS, MAIN_MENU_OPTION_LOGIN, MENU_OPTION_EXIT };
+	private static final String VIEW_CURRENT_BALANCE = "Your current account balance is: $";
 	private static final String VIEW_TRANSFER_DETAILS = "Please enter transfer ID to view details (0 to cancel)";
 	
     private AuthenticatedUser currentUser;
@@ -53,6 +54,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		System.out.println("* Welcome to TEnmo! *");
 		System.out.println("*********************");
 		
+		
+		
 		registerAndLogin();
 		mainMenu();
 	}
@@ -65,11 +68,13 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			} else if(MAIN_MENU_OPTION_VIEW_PAST_TRANSFERS.equals(choice)) {
 				viewTransferHistory();
 			} else if(MAIN_MENU_OPTION_VIEW_PENDING_REQUESTS.equals(choice)) {
-				viewPendingRequests();
+				System.out.println("Feature coming soon!");
+				//viewPendingRequests();
 			} else if(MAIN_MENU_OPTION_SEND_BUCKS.equals(choice)) {
 				sendBucks();
 			} else if(MAIN_MENU_OPTION_REQUEST_BUCKS.equals(choice)) {
-				requestBucks();
+				System.out.println("Feature coming soon!");
+				//requestBucks();
 			} else if(MAIN_MENU_OPTION_LOGIN.equals(choice)) {
 				login();
 			} else {
@@ -80,32 +85,40 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewCurrentBalance() {
-//		System.out.println("Enter in your account ID: ");
-//		String userInput = console.getUserInput("Enter in your account ID");
-//		Long id = Long.parseLong(userInput);
 		try {
-			System.out.println("Your current account balance is: $" + 
+			System.out.println(VIEW_CURRENT_BALANCE + 
 					accountService.viewCurrentBalance(currentUser.getUser().getId().longValue()).getAccountBalance());
-			
 		} catch (AccountServiceException e) {
 			e.printStackTrace();
-			System.out.println("Invalid account ID, please try again with a valid ID.");
 		}
 	}
 
 	private void viewTransferHistory() {
 		try {
-			transferService.viewTransferHistory(currentUser.getUser().getId().longValue());
-			int choice = console.getUserInputInteger(VIEW_TRANSFER_DETAILS);
-			if (choice != 0) {
-				System.out.println(transferService.viewTransferDetails(choice));
+			boolean hasHistory = transferService.viewTransferHistory(currentUser.getUser().getId().longValue());
+			
+			if (hasHistory) {
+				int choice = console.getUserInputInteger(VIEW_TRANSFER_DETAILS);
+				Long transferId = (long)choice;
+				
+				if (choice != 0) {
+					Transfer transfer = transferService.viewTransferDetails(currentUser.getUser().getId().longValue(), transferId);
+					
+					if (transfer == null) {
+						System.out.println("\nInvalid selection. Please enter a valid transfer ID from your history.\n");
+						this.viewTransferHistory();
+					
+					} else {
+						System.out.println(transfer);
+					}
+				}
 			} else {
+				System.out.println("It looks like you don't have any transfers in your account history.");
 				mainMenu();
 			}
 			
 		} catch (TransferServiceException e) {
 			e.printStackTrace();
-			System.out.println("It looks like you don't have any transactions. Please make a transaction to view your history.");
 		}
 		
 	}
