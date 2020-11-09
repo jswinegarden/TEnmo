@@ -148,15 +148,17 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 		Long toUser;
 		BigDecimal amount;
 		
-		System.out.println("Please select userId: ");
+		System.out.print("\nEnter ID of user you are sending to: ");
 		toUser = scanner.nextLong();
 		
-		System.out.println("Please enter amount: ");
+		System.out.print("\nEnter amount to send (without the dollar sign): ");
 		amount = scanner.nextBigDecimal(); 
 		
 		try {
 			transferService.sendBucks(fromUser, toUser, amount);
-		} catch (TransferServiceException e) {
+			accountService.updateSenderAccountBalance(fromUser, amount);
+			accountService.updateReceiverAccountBalance(toUser, amount);
+		} catch (TransferServiceException | AccountServiceException e) {
 			e.printStackTrace();
 			System.out.println("It looks like the transfer didn't go through. Make sure you have enough money in your account to make this transfer, and all your transfer data is entered properly");
 		}

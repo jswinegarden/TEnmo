@@ -79,13 +79,24 @@ public class ConsoleService {
 	}
 	
 	public void printUsers(User[] users) {
+		
+		System.out.println("----------------------------------------------");
+		String heading1 = "User ID";
+		String heading2 = "Username";
+		System.out.printf( "%-15s %15s %n", heading1, heading2);
+		System.out.println("----------------------------------------------");
+		for (User user : users) {
+			System.out.printf("%-15s %15s %n",user.getId(), user.getUsername());
+		}
+		/*
 		System.out.println("--------------------------------");
-		System.out.println("User ID  	 			Username");
+		System.out.println("User/tUsername");
 		for (User user : users) {
 			System.out.println(user.getId() + " : " + user.getUsername());
 		}
+		*/
 	}
-	
+	/*
 	public String promptForTransferData(Long currentUserId) {
 //		String transferString;
 		
@@ -110,4 +121,5 @@ public class ConsoleService {
 //		}
 		return transferString;
 	}
+	*/
 }
