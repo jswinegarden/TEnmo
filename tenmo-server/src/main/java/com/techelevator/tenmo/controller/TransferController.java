@@ -38,10 +38,10 @@ public class TransferController {
 		return transferDAO.viewTransferById(transferId);
 	}
 	
-	@ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(path = "accounts/transfers", method = RequestMethod.PUT)
-    public boolean sendTransfer(@Valid @RequestBody Transfer transfers, Long fromUserId, Long toUserId, BigDecimal amount) {
-    	return transferDAO.sendTransfer(fromUserId, toUserId, amount);
+	@ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(path = "transfers", method = RequestMethod.POST)
+    public Transfer sendTransfer(@Valid @RequestBody Transfer transfer) {
+    	return transferDAO.sendTransfer(transfer);
     }
 
 }
