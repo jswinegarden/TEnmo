@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.techelevator.tenmo.dao.AccountDAO;
 import com.techelevator.tenmo.dao.TransferDAO;
 import com.techelevator.tenmo.model.Transfer;
 
@@ -20,9 +21,11 @@ import com.techelevator.tenmo.model.Transfer;
 public class TransferController {
 	
 	private TransferDAO transferDAO;
+	private AccountDAO accountDAO;
 	
-	public TransferController(TransferDAO transferDAO){
+	public TransferController(TransferDAO transferDAO, AccountDAO accountDAO){
 		this.transferDAO = transferDAO;
+		this.accountDAO = accountDAO;
 	}
 	
 	@RequestMapping(value = "/accounts/{id}/transfers", method = RequestMethod.GET)
@@ -37,8 +40,11 @@ public class TransferController {
 	
 	@ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/accounts/{id}/transfers", method = RequestMethod.POST)
-    public boolean sendTransfer(@Valid @RequestBody Transfer transfers, @PathVariable("id") Long fromUserId, Long toUserId, BigDecimal amount) {
-    	return transferDAO.sendTransfer(toUserId, toUserId, amount);
+    public boolean sendTransfer(@Valid @RequestBody Transfer transfers, @PathVariable("id") Long fromUserId, Long toUserId, BigDecimal amount, BigDecimal accountBalance) {
+    	accountDAO.updateReceiverAccountBalance(toUserId, amount, accountBalance);
+    	accountDAO.updateSenderAccountBalance(fromUserId, amount, accountBalance);
+    	transferDAO.sendTransfer(toUserId, toUserId, amount);
+    	return true;
     }
 
 }

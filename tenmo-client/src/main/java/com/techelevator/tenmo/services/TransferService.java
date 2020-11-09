@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import com.techelevator.tenmo.models.Account;
 import com.techelevator.tenmo.models.Transfer;
 
 public class TransferService {
@@ -20,14 +21,16 @@ public class TransferService {
 	private final String BASE_URL;
 	private final RestTemplate restTemplate = new RestTemplate();
 	
+	Account account;
+	
 	public TransferService(String url) {
 		BASE_URL = url;
 	}
 
-	public void viewTransferHistory(Long accountId) throws TransferServiceException {
+	public Transfer[] viewTransferHistory() throws TransferServiceException {
 		Transfer[] transfers = null;
 		try {
-			transfers = restTemplate.exchange(BASE_URL + "accounts/"+ accountId +"/transfers", 
+			transfers = restTemplate.exchange(BASE_URL + "accounts/"+ account.getAccountId() +"/transfers", 
 					HttpMethod.GET, makeAuthEntity(), Transfer[].class).getBody();
 		
 			System.out.println("----------------------------------------------");
@@ -36,12 +39,12 @@ public class TransferService {
 			System.out.println("----------------------------------------------");
 			
 			for(int i = 0; i < transfers.length; i++) {
-				if(transfers[i].getAccountFrom()==accountId){
+				if(transfers[i].getAccountFrom()==account.getAccountId()){
 					
 					System.out.println(transfers[i].getTransferId()+"        \t To: "+
 										transfers[i].getAccountTo()+ "        \t\t $"+transfers[i].getAmount());
 				
-				} else if (transfers[i].getAccountTo()==accountId){
+				} else if (transfers[i].getAccountTo()==account.getAccountId()){
 					System.out.println(transfers[i].getTransferId()+"        \t From: "+
 										transfers[i].getAccountFrom()+"      \t\t $"+transfers[i].getAmount());
 				}	
@@ -51,6 +54,7 @@ public class TransferService {
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
+		return transfers;
 	
 	}
 	
@@ -71,7 +75,7 @@ public class TransferService {
 	public Transfer sendBucks(String newTransfer) throws TransferServiceException {
 		Transfer transfer = makeTransfer(newTransfer);
 		try {
-			transfer = restTemplate.postForObject(BASE_URL + "transfers", makeTransferEntity(transfer), Transfer.class);
+			transfer = restTemplate.postForObject(BASE_URL + "accounts/" + transfer.getAccountTo() +  "/transfers", makeTransferEntity(transfer), Transfer.class);
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
@@ -81,7 +85,7 @@ public class TransferService {
 	private Transfer makeTransfer(String CSV) {
 		
 		String[] parsed = CSV.split(",");
-		BigDecimal transferAmount = new BigDecimal(parsed[7]);
+		BigDecimal transferAmount = new BigDecimal(parsed.length - 1);
 		
 		if(parsed.length < 7 || parsed.length > 8) {
 			return null;
@@ -89,7 +93,7 @@ public class TransferService {
 		
 		if (parsed.length == 7) {
 			String[] withId = new String[9];
-			Transfer[] transfers = new Transfer[0];
+			Transfer[] transfers = new Transfer[7];
 			try {
 				transfers = viewTransferHistory();
 			} catch (TransferServiceException e) {
