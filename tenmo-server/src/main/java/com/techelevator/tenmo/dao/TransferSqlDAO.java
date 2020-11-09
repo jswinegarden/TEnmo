@@ -59,16 +59,16 @@ public class TransferSqlDAO implements TransferDAO {
 	}
 
 	@Override
-	public boolean sendTransfer(Long fromAccountId, Long toAccountId, BigDecimal amount) {
+	public Transfer sendTransfer(Transfer transfer) {
 		
 		String sql = "INSERT INTO transfers (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-					"VALUES (DEFAULT, (SELECT transfer_status_id FROM transfer_statuses WHERE transfer_status_desc = 'Approved'), " +
-							"(SELECT transfer_type_id FROM transfer_types WHERE transfer_type_desc = 'Send'), " +
-							"? , ? , ?) ";
+				"VALUES (DEFAULT, ?, ?, ?, ?, ?) ";
 		
-		jdbcTemplate.update(sql, fromAccountId, toAccountId, amount);
 		
-		return true;
+		jdbcTemplate.update(sql, transfer.getTransferTypeId(), transfer.getTransferStatusId(), 
+				transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
+		
+		return transfer;
 	
 	}
 	

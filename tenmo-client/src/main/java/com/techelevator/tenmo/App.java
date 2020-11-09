@@ -135,6 +135,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void sendBucks() {
+		
 		User[] users = null;
 		try {
 			users = userService.findAll();
@@ -142,9 +143,19 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			e.printStackTrace();
 		}
 		console.printUsers(users);
-		String newTransferString = console.promptForTransferData(null, currentUser.getUser().getId().longValue());
+		
+		Long fromUser = currentUser.getUser().getId().longValue();
+		Long toUser;
+		BigDecimal amount;
+		
+		System.out.println("Please select userId: ");
+		toUser = scanner.nextLong();
+		
+		System.out.println("Please enter amount: ");
+		amount = scanner.nextBigDecimal(); 
+		
 		try {
-			Transfer transfer = transferService.sendBucks(newTransferString);
+			transferService.sendBucks(fromUser, toUser, amount);
 		} catch (TransferServiceException e) {
 			e.printStackTrace();
 			System.out.println("It looks like the transfer didn't go through. Make sure you have enough money in your account to make this transfer, and all your transfer data is entered properly");
