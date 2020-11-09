@@ -100,12 +100,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void viewTransferHistory() {
 		try {
-<<<<<<< HEAD
-			transferService.viewTransferHistory();
-			int choice = console.getUserInputInteger(VIEW_TRANSFER_DETAILS);
-			if (choice != 0) {
-				System.out.println(transferService.viewTransferDetails(choice));
-=======
 			boolean hasHistory = transferService.viewTransferHistory(currentUser.getUser().getId().longValue());
 			
 			if (hasHistory) {
@@ -123,7 +117,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 						System.out.println(transfer);
 					}
 				}
->>>>>>> 950716b8d888ecae464697d3fdcae5bd5cbc94cc
 			} else {
 				System.out.println("It looks like you don't have any transfers in your account history.");
 				mainMenu();

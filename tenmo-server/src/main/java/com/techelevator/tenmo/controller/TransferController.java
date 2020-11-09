@@ -39,11 +39,9 @@ public class TransferController {
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/accounts/{id}/transfers", method = RequestMethod.POST)
-    public boolean sendTransfer(@Valid @RequestBody Transfer transfers, @PathVariable("id") Long fromUserId, Long toUserId, BigDecimal amount, BigDecimal accountBalance) {
-    	accountDAO.updateReceiverAccountBalance(toUserId, amount, accountBalance);
-    	accountDAO.updateSenderAccountBalance(fromUserId, amount, accountBalance);
-    	transferDAO.sendTransfer(toUserId, toUserId, amount);
+    @RequestMapping(path = "transfers", method = RequestMethod.POST)
+    public boolean sendTransfer(@Valid @RequestBody Transfer transfers, Long fromUserId, Long toUserId, BigDecimal amount, BigDecimal accountBalance) {
+    	transferDAO.sendTransfer(fromUserId, toUserId, amount);
     	return true;
     }
 
