@@ -23,7 +23,6 @@ import com.techelevator.tenmo.model.Account;
 public class AccountController {
 	
 	private AccountDAO accountDAO;
-	
 //	public AccountController () {
 //		this.accountDAO = new AccountSQLDAO(null);
 //
