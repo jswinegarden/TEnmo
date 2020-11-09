@@ -48,5 +48,4 @@ public class AccountController {
 	public boolean updateReceiverAccountBalance(@PathVariable("id") @RequestBody Long accountId, BigDecimal amount, BigDecimal accountBalance) {
 		return accountDAO.updateReceiverAccountBalance(accountId, amount, accountBalance);
 	}
-	
 }
