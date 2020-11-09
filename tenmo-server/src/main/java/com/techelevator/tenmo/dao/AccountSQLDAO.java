@@ -39,7 +39,7 @@ public class AccountSQLDAO implements AccountDAO {
 	public boolean updateSenderAccountBalance(Long accountId, BigDecimal amount, BigDecimal accountBalance) {  
 		BigDecimal account = accountBalance;
 		BigDecimal sub = amount;
-		if((account.compareTo(sub) ==  1)) {
+		if((account.compareTo(sub) == - 1)) {
 			return false;
 		}
 		String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
