@@ -86,20 +86,11 @@ public class ConsoleService {
 		}
 	}
 	
-	public String promptForTransferData(Transfer transfer, Long currentUserId) {
-		String transferString;
+	public void promptForTransferData() {
 		System.out.println("----------------------------------------");
 		System.out.println("Enter user ID and amount to send in comma separated list:");
-		if (transfer != null) {
-			System.out.println(transfer.toString());
-		} else {
-			System.out.println("Example: 1, 50");
-		}
+		System.out.println("Example: 1, 50");
 		System.out.println("----------------------------------------");
-		transferString = scanner.nextLine();
-		if (transfer != null) {
-			transferString = currentUserId + transferString;
-		}
-		return transferString;
+		
 	}
 }

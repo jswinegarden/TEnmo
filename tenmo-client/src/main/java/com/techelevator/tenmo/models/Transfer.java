@@ -16,7 +16,7 @@ public class Transfer {
 	private String fromUsername;
 	private String toUsername;
 	
-	public Transfer() {
+	public Transfer(Long transferId2, long l, long m, Long transferTypeId2, Transfer transfer, BigDecimal transferAmount) {
 		
 	}
 	
@@ -32,6 +32,10 @@ public class Transfer {
 		this.amount = amount;
 	}
 	
+	public Transfer(Long transferId2, Long userId, long parseLong, Long transferTypeId2, Transfer transfer,
+			BigDecimal transferAmount) {
+	}
+
 	public Long getTransferId() {
 		return transferId;
 	}
