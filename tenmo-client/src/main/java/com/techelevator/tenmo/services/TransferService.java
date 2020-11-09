@@ -84,35 +84,59 @@ public class TransferService {
 		
 	}
 	
-	public Transfer sendBucks(Transfer newTransfer) throws TransferServiceException {
-		//Transfer transfer = makeTransfer(newTransfer);
+	public Transfer sendBucks(Long fromUser, Long toUser, BigDecimal amount) throws TransferServiceException {
+		Long transferTypeId = (long)2;
+		Long transferStatusId = (long)2;
+		
+		Transfer transfer = new Transfer(transferTypeId, transferStatusId, fromUser, toUser, amount);
 		try {
-			restTemplate.exchange(BASE_URL + "transfers", HttpMethod.POST, makeTransferEntity(newTransfer), Transfer.class).getBody();
+			transfer = restTemplate.exchange(BASE_URL + "transfers", HttpMethod.POST, makeTransferEntity(transfer), Transfer.class).getBody();
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
 		return newTransfer;
 	}
 	
-//	private Transfer makeTransfer(String CSV) {
-//		
-//		String[] parsed = CSV.split(",");
-//		BigDecimal transferAmount = new BigDecimal(parsed.length - 1);
-//		
-//		if(parsed.length < 7 || parsed.length > 8) {
-//			return null;
-//		}
-//		
-//		if (parsed.length == 7) {
-//			String[] withId = new String[9];
-//			String[] idArray = new String[] {new Random().nextInt(1000) + ""};
-//			System.arraycopy(idArray, 0, withId, 0, 1);
-//			System.arraycopy(parsed, 0, withId, 1, 5);
-//			parsed = withId;
-//			
-//		}
-//		return new Transfer(Long.parseLong(parsed[0].trim()), Long.parseLong(parsed[1].trim()), parsed[2].trim(), Long.parseLong(parsed[3].trim()), parsed[4].trim(), Long.parseLong(parsed[5].trim()), Long.parseLong(parsed[6].trim()), transferAmount);
-//	}
+	/*
+	private Transfer makeTransfer(String CSV) {
+		
+		String[] parsed = CSV.split(", ");
+		Long transferId = (long)1;
+		Long transferTypeId = (long)2;
+		Long transferStatusId = (long)2;
+		BigDecimal transferAmount = new BigDecimal(parsed.length - 1);
+		
+		
+		if(parsed.length < 7 || parsed.length > 8) {
+			return null;
+		}
+		
+		
+		if (parsed.length == 7) {
+			String[] withId = new String[9];
+			String[] idArray = new String[] {new Random().nextInt(1000) + ""};
+			System.arraycopy(idArray, 0, withId, 0, 1);
+			System.arraycopy(parsed, 0, withId, 1, 5);
+			parsed = withId;
+			
+		}
+		return new Transfer(Long.parseLong(parsed[0].trim()), Long.parseLong(parsed[1].trim()), parsed[2].trim(), Long.parseLong(parsed[3].trim()), parsed[4].trim(), Long.parseLong(parsed[5].trim()), Long.parseLong(parsed[6].trim()), transferAmount);
+		
+		
+		if (parsed.length == 6) {
+			String[] withId = new String[7];
+			String[] idArray = new String[] {new Random().nextInt(1000) + ""};
+			System.arraycopy(idArray, 0, withId, 0, 1);
+			System.arraycopy(parsed, 0, withId, 1, 5);
+			parsed = withId;
+			
+		}
+		
+		
+		
+		return new Transfer(transferTypeId, transferStatusId, Long.parseLong(parsed[0].trim()), Long.parseLong(parsed[1].trim()), transferAmount);
+	}
+	*/
 	
 	private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
 		HttpHeaders headers = new HttpHeaders();

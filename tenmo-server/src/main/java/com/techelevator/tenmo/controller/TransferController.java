@@ -40,8 +40,8 @@ public class TransferController {
 	
 	@ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "transfers", method = RequestMethod.POST)
-    public boolean sendTransfer(@Valid @RequestBody Transfer transfers, Long fromUserId, Long toUserId, BigDecimal amount) {
-    	return transferDAO.sendTransfer(fromUserId, toUserId, amount);
+    public Transfer sendTransfer(@Valid @RequestBody Transfer transfer) {
+    	return transferDAO.sendTransfer(transfer);
     }
 
 }

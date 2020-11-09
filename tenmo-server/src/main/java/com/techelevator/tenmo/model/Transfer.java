@@ -20,17 +20,27 @@ public class Transfer {
 		
 	}
 	
-//	public Transfer(Long transferId, Long transferTypeId, String transferType, Long transferStatusId, String transferStatus,
-//			Long accountFrom,Long accountTo, BigDecimal amount) {
-//		this.transferId = transferId;
-//		this.transferTypeId = transferTypeId;
-//		this.transferType = transferType;
-//		this.transferStatusId = transferStatusId;
-//		this.transferStatus = transferStatus;
-//		this.accountFrom = accountFrom;
-//		this.accountTo = accountTo;
-//		this.amount = amount;
-//	}
+	/*
+	public Transfer(Long transferId, Long transferTypeId, String transferType, Long transferStatusId, String transferStatus,
+			Long accountFrom,Long accountTo, BigDecimal amount) {
+		this.transferId = transferId;
+		this.transferTypeId = transferTypeId;
+		this.transferType = transferType;
+		this.transferStatusId = transferStatusId;
+		this.transferStatus = transferStatus;
+		this.accountFrom = accountFrom;
+		this.accountTo = accountTo;
+		this.amount = amount;
+	}
+	*/
+	
+	public Transfer(Long transferTypeId, Long transferStatusId, Long accountFrom,Long accountTo, BigDecimal amount) {
+		this.transferTypeId = transferTypeId;
+		this.transferStatusId = transferStatusId;
+		this.accountFrom = accountFrom;
+		this.accountTo = accountTo;
+		this.amount = amount;
+	}
 	
 	public Long getTransferId() {
 		return transferId;
