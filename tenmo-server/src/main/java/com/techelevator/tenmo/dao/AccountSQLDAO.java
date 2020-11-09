@@ -36,18 +36,60 @@ public class AccountSQLDAO implements AccountDAO {
 	}
 	
 	@Override
-	public Account updateSenderAccountBalance(Account account, Long accountId) {  
-		Transfer transfer = null;
-		BigDecimal accountBalance = account.getAccountBalance();
-		BigDecimal sub = transfer.getAmount();
-		if((accountBalance.compareTo(sub) >= 0)) {
-			String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
-			BigDecimal diff = accountBalance.subtract(sub);
+//	public Account updateSenderAccountBalance(Account account, Long accountId) {  
+//		Transfer transfer = null;
+//		BigDecimal accountBalance = account.getAccountBalance();
+//		BigDecimal sub = transfer.getAmount();
+//		if((accountBalance.compareTo(sub) >= 0)) {
+//			String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
+//			BigDecimal diff = accountBalance.subtract(sub);
+//		}
+//		
+//		return account;
+//	}
+	public Account updateSenderAccountBalance(Long fromAccountId, Account updatedFromAccount) {  
+		BigDecimal currentAmount = null;
+		String sqlSelect = "SELECT balance FROM accounts WHERE account_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelect, updatedFromAccount.getAccountId());
+		if(results.next()) {
+			currentAmount = results.getBigDecimal("balance");
 		}
 		
-		return account;
+		BigDecimal updatedAmount = currentAmount.subtract(updatedFromAccount.getAccountBalance());
+		String sqlUpdate = "UPDATE accounts SET balance = ? WHERE account_id = ?";
+		jdbcTemplate.update(sqlUpdate, updatedAmount, fromAccountId);
+		
+		return updatedFromAccount;
+		
+		/*
+		BigDecimal account = accountBalance;
+		BigDecimal sub = amount;
+		if((account.compareTo(sub) == - 1)) {
+			return false;
+		}
+		String sql = "UPDATE accounts SET account_balance = ? WHERE accountId = ?";
+		BigDecimal diff = account.subtract(sub);
+		return jdbcTemplate.update(sql, diff) == 1;
+		*/
 	}
 	
+	@Override
+	public Account updateReceiverAccountBalance(Long toAccountId, Account updatedToAccount) { 
+		BigDecimal currentAmount = null;
+		String sqlSelect = "SELECT balance FROM accounts WHERE account_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelect, updatedToAccount.getAccountId());
+		if(results.next()) {
+			currentAmount = results.getBigDecimal("balance");
+		}
+		
+		BigDecimal updatedAmount = currentAmount.add(updatedToAccount.getAccountBalance());
+		String sqlUpdate = "UPDATE accounts SET balance = ? WHERE account_id = ?";
+		jdbcTemplate.update(sqlUpdate, updatedAmount, toAccountId);
+		
+		return updatedToAccount;
+	}
+	
+	/*
 	@Override
 	public Account updateReceiverAccountBalance(Account account, Long accountId) { 
 		Transfer transfer = null;
@@ -58,6 +100,7 @@ public class AccountSQLDAO implements AccountDAO {
 		jdbcTemplate.update(sql, sum);
 		return account;
 	}
+	*/
 	
 
 private Account mapRowToAccount(SqlRowSet rs) {

@@ -5,16 +5,20 @@ import java.math.BigDecimal;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import com.techelevator.tenmo.models.Account;
+import com.techelevator.tenmo.models.AuthenticatedUser;
+import com.techelevator.tenmo.models.Transfer;
 
 public class AccountService {
 
 	public static String AUTH_TOKEN = "";
 	private final String BASE_URL;
 	public RestTemplate restTemplate = new RestTemplate();
+	private AuthenticatedUser currentUser;
 	
 	public AccountService(String url) {
 		BASE_URL = url;
@@ -30,26 +34,37 @@ public class AccountService {
 		return account;
 	}
 	
-	public Account updateSenderAccountBalance(Long fromUserId) throws AccountServiceException {
-		Account account = null;
+	public Account updateSenderAccountBalance(Long fromUserId, BigDecimal amount) throws AccountServiceException {
+		Account account = new Account (fromUserId, fromUserId, amount);
+		//if(fromUserId == currentUser.getUser().getId().longValue()) {
 		try {
-			account = restTemplate.exchange(BASE_URL + "accounts/" + fromUserId, HttpMethod.PUT, makeAuthEntity(), Account.class).getBody();
+			account = restTemplate.exchange(BASE_URL + "accounts/" + fromUserId, HttpMethod.PUT, makeAccountEntity(account), Account.class).getBody();
 		} catch (RestClientResponseException ex) {
 			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
+		//}
 		}
 		return account;
 	}
 	
-	public Account updateReceiverAccountBalance(Long toUserId) throws AccountServiceException {
-		Account account = null;
+	public Account updateReceiverAccountBalance(Long toUserId, BigDecimal amount) throws AccountServiceException {
+		Account account = new Account (toUserId, toUserId, amount);
+		//if(toUserId != currentUser.getUser().getId().longValue()) {
 		try {
-			account = restTemplate.exchange(BASE_URL + "accounts/" + toUserId, HttpMethod.PUT, makeAuthEntity(), Account.class).getBody();
+			account = restTemplate.exchange(BASE_URL + "accounts/" + toUserId, HttpMethod.PUT, makeAccountEntity(account), Account.class).getBody();
 		} catch (RestClientResponseException ex) {
 			throw new AccountServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
+		//}
 		}
 		return account;
 	}
 	
+	private HttpEntity<Account> makeAccountEntity(Account account) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setBearerAuth(AUTH_TOKEN);
+		HttpEntity<Account> entity = new HttpEntity<>(account, headers);
+		return entity;
+	}
 	
 	private HttpEntity makeAuthEntity() {
 		HttpHeaders headers = new HttpHeaders();
