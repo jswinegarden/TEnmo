@@ -35,11 +35,13 @@ public class TransferSqlDAO implements TransferDAO {
 					"INNER JOIN transfer_types tt ON tt.transfer_type_id = t.transfer_type_id " +
 					"INNER JOIN transfer_statuses ts ON ts.transfer_status_id = t.transfer_status_id " +
 					"WHERE t.account_from IN (SELECT account_id FROM accounts WHERE account_id = ?) " +
-					"OR t.account_to IN (SELECT account_id FROM accounts WHERE account_id = ?)";
+					"OR t.account_to IN (SELECT account_id FROM accounts WHERE account_id = ?)";			
 		
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId, accountId);
 		while(results.next()) {
 			Transfer transfer = mapRowToTransfer(results);
+			transfer.setFromUsername(getFromUsername(transfer.getAccountFrom()));
+			transfer.setToUsername(getToUsername(transfer.getAccountTo()));
 			pastTransfers.add(transfer);
 		}
 		
@@ -48,39 +50,12 @@ public class TransferSqlDAO implements TransferDAO {
 
 	@Override
 	public Transfer viewTransferById(Long transferId) {
-		
-//		String sql = "SELECT t.transfer_id, t.transfer_type_id, tt.transfer_type_desc, t.transfer_status_id, ts.transfer_status_desc, " +
-//				"t.account_from, t.account_to, t.amount " +
-//				"FROM transfers t " +
-//				"INNER JOIN transfer_types tt ON tt.transfer_type_id = t.transfer_type_id " +
-//				"INNER JOIN transfer_statuses ts ON ts.transfer_status_id = t.transfer_status_id " +
-//				"WHERE (t.account_from IN (SELECT account_id FROM accounts WHERE account_id = ?) " +
-//				"OR t.account_to IN (SELECT account_id FROM accounts WHERE account_id = ?)) " +
-//				"AND t.transfer_id = ? "; 
-//		
-//		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId, accountId, transferId);
-//		
-//		if(results.next()) {
-//			Transfer transfer = mapRowToTransfer(results);
-//			return transfer;
-//		}
-//		
-//		return null;
-
 		for (Transfer transfer : this.getAllTransfers()) {
 			if (transfer.getTransferId() == transferId) {
 				return transfer;
 			}
 		}
 		return null;
-		
-//		for (Transfer transfer : this.getAllTransfers()) {
-//			if (transfer.getTransferId() == transferId &&
-//					(transfer.getAccountFrom() == accountId || transfer.getAccountTo() == accountId)) {
-//				return transfer;
-//			}
-//		}
-//		return null;
 	}
 
 	@Override
@@ -100,7 +75,7 @@ public class TransferSqlDAO implements TransferDAO {
 	@Override
 	public List<Transfer> getAllTransfers(){
 		List<Transfer> allTransfers = new ArrayList<>();
-		
+				
 		String sql = "SELECT t.transfer_id, t.transfer_type_id, tt.transfer_type_desc, t.transfer_status_id, ts.transfer_status_desc, " +
 				"t.account_from, t.account_to, t.amount " +
 				"FROM transfers t " +
@@ -110,13 +85,50 @@ public class TransferSqlDAO implements TransferDAO {
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
 		while(results.next()) {
 			Transfer transfer = mapRowToTransfer(results);
+			transfer.setFromUsername(getFromUsername(transfer.getAccountFrom()));
+			transfer.setToUsername(getToUsername(transfer.getAccountTo()));
 			allTransfers.add(transfer);
 		}
 		
 		return allTransfers;
 	}
-		
 	
+	public String getFromUsername(Long accountFrom) {
+		String fromUsername = null;
+		
+		String sql = "SELECT username " + 
+				"FROM users u " + 
+				"INNER JOIN accounts a ON a.user_id = u.user_id " + 
+				"INNER JOIN transfers t ON a.account_id = t.account_from " + 
+				"WHERE t.account_from = ? ";
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountFrom);
+		
+		if(results.next()) {
+			fromUsername = results.getString("username");
+		}
+		
+		return fromUsername;
+	}
+	
+	public String getToUsername(Long accountTo) {
+		String toUsername = null;
+		
+		String sql = "SELECT username " + 
+				"FROM users u " + 
+				"INNER JOIN accounts a ON a.user_id = u.user_id " + 
+				"INNER JOIN transfers t ON a.account_id = t.account_to " + 
+				"WHERE t.account_to = ? ";
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountTo);
+		
+		if(results.next()) {
+			toUsername = results.getString("username");
+		}
+		
+		return toUsername;
+	}
+		
 	private Transfer mapRowToTransfer(SqlRowSet rs) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(rs.getLong("transfer_id"));

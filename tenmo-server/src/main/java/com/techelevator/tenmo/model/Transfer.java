@@ -13,6 +13,9 @@ public class Transfer {
 	private Long accountTo;
 	private BigDecimal amount;
 	
+	private String fromUsername;
+	private String toUsername;
+	
 	public Transfer() {
 		
 	}
@@ -28,31 +31,35 @@ public class Transfer {
 		this.accountTo = accountTo;
 		this.amount = amount;
 	}
-
+	
 	public Long getTransferId() {
 		return transferId;
 	}
 	public void setTransferId(Long transferId) {
 		this.transferId = transferId;
 	}
+	
 	public Long getTransferTypeId() {
 		return transferTypeId;
 	}
 	public void setTransferTypeId(Long transferTypeId) {
 		this.transferTypeId = transferTypeId;
 	}
+	
 	public String getTransferType() {
 		return transferType;
 	}
 	public void setTransferType(String transferType) {
 		this.transferType = transferType;
 	}
+	
 	public Long getTransferStatusId() {
 		return transferStatusId;
 	}
 	public void setTransferStatusId(Long transferStatusId) {
 		this.transferStatusId = transferStatusId;
 	}
+	
 	public String getTransferStatus() {
 		return transferStatus;
 	}
@@ -81,19 +88,31 @@ public class Transfer {
 		this.amount = amount;
 	}
 	
+	public String getFromUsername() {
+		return fromUsername;
+	}
+	public void setFromUsername(String fromUsername) {
+		this.fromUsername = fromUsername;
+	}
+	
+	public String getToUsername() {
+		return toUsername;
+	}
+	public void setToUsername(String toUsername) {
+		this.toUsername = toUsername;
+	}
+	
 	@Override
 	public String toString() {
 		return "\n--------------------------------" +
 			   "\n Transfer Details" +
 			   "\n--------------------------------" +
 			   "\n Transfer ID: " + transferId +
-			   "\n Transfer Type ID: " + transferTypeId +
-			   "\n Transfer Type: " + transferType +
-			   "\n Transfer Status ID: " + transferStatusId +
-			   "\n Transfer Status: " + transferStatus +
-			   "\n From: " + accountFrom +
-			   "\n To: " + accountTo +
-			   "\n Amount: " + amount;
+			   "\n From: " + fromUsername +
+			   "\n To: " + toUsername +
+			   "\n Type: " + transferType +
+			   "\n Status: " + transferStatus +
+			   "\n Amount: $" + amount;
 	}
 
 }
