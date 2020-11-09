@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.techelevator.tenmo.models.AuthenticatedUser;
 import com.techelevator.tenmo.models.Transfer;
+import com.techelevator.tenmo.models.User;
 import com.techelevator.tenmo.models.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AccountServiceException;
@@ -12,6 +13,8 @@ import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.AuthenticationServiceException;
 import com.techelevator.tenmo.services.TransferService;
 import com.techelevator.tenmo.services.TransferServiceException;
+import com.techelevator.tenmo.services.UserService;
+import com.techelevator.tenmo.services.UserServiceException;
 import com.techelevator.view.ConsoleService;
 
 public class App {
@@ -38,6 +41,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     
     AccountService accountService = new AccountService(API_BASE_URL);
     TransferService transferService = new TransferService(API_BASE_URL);
+    UserService userService = new UserService(API_BASE_URL);
+    private Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
     	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL));
@@ -130,7 +135,14 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void sendBucks() {
-		String newTransferString = console.promptForTransferData(null);
+		User[] users = null;
+		try {
+			users = userService.findAll();
+		} catch (UserServiceException e) {
+			e.printStackTrace();
+		}
+		console.printUsers(users);
+		String newTransferString = console.promptForTransferData(null, currentUser.getUser().getId().longValue());
 		try {
 			Transfer transfer = transferService.sendBucks(newTransferString);
 		} catch (TransferServiceException e) {

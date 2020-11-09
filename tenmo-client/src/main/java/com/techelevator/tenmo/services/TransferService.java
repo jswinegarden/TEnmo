@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import com.techelevator.tenmo.models.Account;
 import com.techelevator.tenmo.models.Transfer;
 
 public class TransferService {
@@ -19,6 +21,8 @@ public class TransferService {
 	public static String AUTH_TOKEN = ""; 
 	private final String BASE_URL;
 	private final RestTemplate restTemplate = new RestTemplate();
+	
+	Account account;
 	
 	public TransferService(String url) {
 		BASE_URL = url;
@@ -83,7 +87,7 @@ public class TransferService {
 	public Transfer sendBucks(String newTransfer) throws TransferServiceException {
 		Transfer transfer = makeTransfer(newTransfer);
 		try {
-			transfer = restTemplate.postForObject(BASE_URL + "transfers", makeTransferEntity(transfer), Transfer.class);
+			transfer = restTemplate.exchange(BASE_URL + "accounts/transfers", HttpMethod.PUT, makeTransferEntity(transfer), Transfer.class).getBody();
 		} catch (RestClientResponseException ex) {
 			throw new TransferServiceException(ex.getRawStatusCode() + " : " + ex.getResponseBodyAsString());
 		}
@@ -93,7 +97,7 @@ public class TransferService {
 	private Transfer makeTransfer(String CSV) {
 		
 		String[] parsed = CSV.split(",");
-		BigDecimal transferAmount = new BigDecimal(parsed[7]);
+		BigDecimal transferAmount = new BigDecimal(parsed.length - 1);
 		
 		if(parsed.length < 7 || parsed.length > 8) {
 			return null;
@@ -101,16 +105,7 @@ public class TransferService {
 		
 		if (parsed.length == 7) {
 			String[] withId = new String[9];
-			Transfer[] transfers = new Transfer[0];
-			try {
-				transfers = viewTransferHistory();
-			} catch (TransferServiceException e) {
-				e.printStackTrace();
-			}
-			if (transfers == null) {
-				return null;
-			}
-			String[] idArray = new String[] { transfers.length + 1 + ""};
+			String[] idArray = new String[] {new Random().nextInt(1000) + ""};
 			System.arraycopy(idArray, 0, withId, 0, 1);
 			System.arraycopy(parsed, 0, withId, 1, 5);
 			parsed = withId;

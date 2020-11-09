@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 import com.techelevator.tenmo.models.Transfer;
+import com.techelevator.tenmo.models.User;
 
 public class ConsoleService {
 
@@ -77,20 +78,27 @@ public class ConsoleService {
 		return result;
 	}
 	
-	public String promptForTransferData(Transfer transfer) {
+	public void printUsers(User[] users) {
+		System.out.println("--------------------------------");
+		System.out.println("User ID  	 			Username");
+		for (User user : users) {
+			System.out.println(user.getId() + " : " + user.getUsername());
+		}
+	}
+	
+	public String promptForTransferData(Transfer transfer, Long currentUserId) {
 		String transferString;
 		System.out.println("----------------------------------------");
-		System.out.println("Enter transfer data as a comma separated list containing:");
-		System.out.println("From Account, To Account, Amount to Transfer");
+		System.out.println("Enter user ID and amount to send in comma separated list:");
 		if (transfer != null) {
 			System.out.println(transfer.toString());
 		} else {
-			System.out.println("Example: John, Amy, 20");
+			System.out.println("Example: 1, 50");
 		}
 		System.out.println("----------------------------------------");
 		transferString = scanner.nextLine();
 		if (transfer != null) {
-			transferString = transfer.getTransferId() + "," + transferString + "," + transfer.getTransferTypeId() + "," + transfer.getTransferStatusId();
+			transferString = currentUserId + transferString;
 		}
 		return transferString;
 	}
